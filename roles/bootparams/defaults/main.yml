@@ -1,5 +1,5 @@
 ---
 
-boot_params_present:
+boot_params_present: []
 
-boot_params_absent:
+boot_params_absent: []

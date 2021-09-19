@@ -9,31 +9,38 @@
   register: param_check
   changed_when: false
 
-- name: Removing {{ item }}
-  lineinfile:
-    path: "/boot/armbianEnv.txt"
-    regexp: "^{{ item }}$"
-    state: absent
-  become: true
-  when: param_check.found > 0
-  notify: restart device
+- block:
+    - name: Removing {{ item }}
+      lineinfile:
+        path: "/boot/armbianEnv.txt"
+        regexp: "^{{ item }}$"
+        state: absent
+      become: true
+      notify: restart device
 
-- name: Removing {{ item }} from extraargs
-  lineinfile:
-    backrefs: true
-    path: "/boot/armbianEnv.txt"
-    regexp: "^extraargs= *((?: *\w)*) *{{ item }} *( \w(?: *\w)*)|$"
-    # regexp: "^extraargs= *(.*){{ item }} *(.*)"
-    line: 'extraargs=\1\2'
-  become: true
-  when: param_check.found > 0
-  notify: restart device
+    - name: Removing {{ item }} from extraargs
+      lineinfile:
+        backrefs: true
+        path: "/boot/armbianEnv.txt"
+        regexp: "^extraargs= *([a-zA-Z._=](?: *[a-zA-Z._=])* )? *{{ item }} *([a-zA-Z._=](?: *[a-zA-Z._=])*)?"
+        line: 'extraargs=\1\2'
+      become: true
+      notify: restart device
 
-- name: Remove extraaargs (if empty)
-  lineinfile:
-    path: "/boot/armbianEnv.txt"
-    regexp: "^extraargs= *$"
-    state: absent
-  become: true
+    - name: Cleanup extraargs
+      lineinfile:
+        backrefs: true
+        path: "/boot/armbianEnv.txt"
+        regexp: "^extraargs= *((?: *[a-zA-Z._=])*)"
+        line: 'extraargs=\1'
+      become: true
+      notify: restart device
+
+    - name: Remove extraaargs (if empty)
+      lineinfile:
+        path: "/boot/armbianEnv.txt"
+        regexp: "^extraargs= *$"
+        state: absent
+      become: true
+      notify: restart device
   when: param_check.found > 0
-  notify: restart device

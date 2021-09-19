@@ -1,5 +1,5 @@
 ---
 
-- name: restarter device
+- name: restart device
   become: true
-  reboot:
+  debug: msg="Yeah"

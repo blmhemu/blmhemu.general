@@ -2,7 +2,7 @@
 
 - name: boot_params_present and boot_params_absent must be mutually exclusive
   assert:
-    that: boot_params_present == 0 or boot_params_absent == 0 or boot_params_present | intersect(boot_params_absent) | length == 0 or 
+    that: boot_params_present | intersect(boot_params_absent) | length == 0
 
 - name: Checking if Armbian type
   stat: path=/boot/armbianEnv.txt
