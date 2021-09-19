@@ -1,12 +1,16 @@
 ---
 
-- name: Checking /boot/armbianEnv.txt
+- name: Checking if Armbian type
   stat: path=/boot/armbianEnv.txt
-  register: amrbian_boot
+  register: armbian_boot
 
-- name: Checking /boot/firmware/cmdline.txt
+- name: Checking if RPi type
   stat: path=/boot/firmware/cmdline.txt
   register: rpi_boot
+
+- name: Assert one of the above type
+  assert:
+    that: armbian_boot.stat.exists or rpi_boot.stat.exists
 
 - block:
     - include: param_present_armbian.yml
@@ -14,7 +18,7 @@
 
     - include: param_absent_armbian.yml
       loop: "{{ boot_params_absent }}"
-  when: amrbian_boot.stat.exists
+  when: armbian_boot.stat.exists
 
 - block:
     - include: param_present_rpi.yml
