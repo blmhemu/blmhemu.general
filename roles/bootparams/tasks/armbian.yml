@@ -1,0 +1,21 @@
+---
+
+- name: Setting params in /boot/armbianEnv.txt
+  block:
+    - become: true
+      lineinfile:
+        path: /proc/cmdline
+        regexp: "(^|.* ){{item}}($| .*)"
+        state: absent
+      check_mode: true
+      register: param_check
+      changed_when: false
+
+    - lineinfile:
+        backrefs: true
+        path: /boot/armbianEnv.txt
+        regexp: "^extraargs=(.*)$"
+        line: '\1 {{item}}"'
+      when: param_check.found == 0
+      notify: restart device
+  with_items: boot_params

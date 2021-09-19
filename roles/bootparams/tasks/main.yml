@@ -1,0 +1,15 @@
+---
+
+- name: Checking /boot/firmware/cmdline.txt
+  stat: path=/boot/firmware/cmdline.txt
+  register: rpi_boot
+
+- name: Checking /boot/armbianEnv.txt
+  stat: path=/boot/firmware/cmdline.txt
+  register: amrbian_boot
+
+- include: rpi.yml
+  when: rpi_boot.stat.exists
+
+- include: armbian.yml
+  when: amrbian_boot.stat.exists

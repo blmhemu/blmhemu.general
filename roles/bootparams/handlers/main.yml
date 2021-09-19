@@ -1,0 +1,5 @@
+---
+
+- name: restart device
+  become: true
+  reboot:
