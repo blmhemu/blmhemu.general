@@ -1,9 +1,9 @@
 ---
 
-- name: Probing if {{ item }} already exists
+- name: Checking if {{ item }} already exists
   lineinfile:
     path: /proc/cmdline
-    regexp: "(^|.* ){{ item }}($| .*)"
+    regexp: "(^|.* ){{ item }}( .*|$)"
     state: absent
   check_mode: true
   register: param_check

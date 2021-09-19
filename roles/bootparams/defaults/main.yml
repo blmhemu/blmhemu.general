@@ -1,4 +1,5 @@
 ---
 
-# Boot params to check and add
-boot_params:
+boot_params_present:
+
+boot_params_absent:

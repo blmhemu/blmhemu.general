@@ -8,16 +8,30 @@
   stat: path=/boot/armbianEnv.txt
   register: amrbian_boot
 
-- include: add_param.yml
-  vars:
-    cmdline_file: /boot/firmware/cmdline.txt
-    params_regexp: "^(.*)$"
-  loop: "{{ boot_params }}"
+- block:
+    - include: param_present.yml
+      vars:
+        cmdline_file: /boot/firmware/cmdline.txt
+        params_regexp: "^(.*)$"
+      loop: "{{ boot_params_present }}"
+
+    - include: param_absent.yml
+      vars:
+        cmdline_file: /boot/firmware/cmdline.txt
+        params_regexp: "^(.*)$"
+      loop: "{{ boot_params_absent }}"
   when: rpi_boot.stat.exists
 
-- include: add_param.yml
-  vars:
-    cmdline_file: /boot/armbianEnv.txt
-    params_regexp: "^extraargs=(.*)$"
-  loop: "{{ boot_params }}"
+- block:
+    - include: param_present.yml
+      vars:
+        cmdline_file: /boot/armbianEnv.txt
+        params_regexp: "^extraargs=(.*)$"
+      loop: "{{ boot_params_present }}"
+    
+    - include: param_absent.yml
+      vars:
+        cmdline_file: /boot/armbianEnv.txt
+        params_regexp: "^extraargs=(.*)$"
+      loop: "{{ boot_params_absent }}"
   when: amrbian_boot.stat.exists
