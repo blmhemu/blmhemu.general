@@ -5,7 +5,7 @@
   register: rpi_boot
 
 - name: Checking /boot/armbianEnv.txt
-  stat: path=/boot/firmware/cmdline.txt
+  stat: path=/boot/armbianEnv.txt
   register: amrbian_boot
 
 - include: add_param.yml
