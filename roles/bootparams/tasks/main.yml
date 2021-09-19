@@ -13,17 +13,17 @@
     that: armbian_boot.stat.exists or rpi_boot.stat.exists
 
 - block:
-    - include: param_present_armbian.yml
+    - include: armbian_present.yml
       loop: "{{ boot_params_present }}"
 
-    - include: param_absent_armbian.yml
+    - include: armbian_absent.yml
       loop: "{{ boot_params_absent }}"
   when: armbian_boot.stat.exists
 
 - block:
-    - include: param_present_rpi.yml
+    - include: rpi_present.yml
       loop: "{{ boot_params_present }}"
 
-    - include: param_absent_rpi.yml
+    - include: rpi_absent.yml
       loop: "{{ boot_params_absent }}"
   when: rpi_boot.stat.exists
