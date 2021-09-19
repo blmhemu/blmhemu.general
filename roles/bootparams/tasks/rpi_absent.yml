@@ -9,15 +9,22 @@
   register: param_check
   changed_when: false
 
-- name: Removing {{ item }}
-  lineinfile:
-    backrefs: true
-    path: "/boot/firmware/cmdline.txt"
-    regexp: " *(.*){{ item }} *(.*)"
-    line: '\1\2'
-  become: true
-  when: param_check.found > 0
-  notify: restart device
+- block:
+    - name: Removing {{ item }}
+      lineinfile:
+        backrefs: true
+        path: "/boot/firmware/cmdline.txt"
+        regexp: "^ *([a-zA-Z._=](?: *[a-zA-Z._=])* )? *{{ item }} *([a-zA-Z._=](?: *[a-zA-Z._=])*)?"
+        line: '\1\2'
+      become: true
+      notify: restart device
 
-# xplore
-# ( *(( *\w+)* )|) *key *( (\w+ *)+|$)
+    - name: Cleanup boot params
+      lineinfile:
+        backrefs: true
+        path: "/boot/firmware/cmdline.txt"
+        regexp: "^ *((?: *[a-zA-Z._=])*)"
+        line: '\1'
+      become: true
+      notify: restart device
+  when: param_check.found > 0
