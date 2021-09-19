@@ -8,7 +8,7 @@
   stat: path=/boot/firmware/cmdline.txt
   register: rpi_boot
 
-- name: Assert one of the above type
+- name: Type must be one of above
   assert:
     that: armbian_boot.stat.exists or rpi_boot.stat.exists
 
