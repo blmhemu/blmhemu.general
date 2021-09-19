@@ -1,5 +1,5 @@
 ---
 
-- name: restart device
+- name: restarter device
   become: true
   reboot:
