@@ -1,6 +1,7 @@
 ---
 
-- lineinfile:
+- name: Probing if {{ item }} already exists
+  lineinfile:
     path: /proc/cmdline
     regexp: "(^|.* ){{ item }}($| .*)"
     state: absent
@@ -8,7 +9,8 @@
   register: param_check
   changed_when: false
 
-- lineinfile:
+- name: Adding {{ item }}
+  lineinfile:
     backrefs: true
     path: "{{ cmdline_file }}"
     regexp: "{{ params_regexp }}"

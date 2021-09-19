@@ -13,7 +13,6 @@
     cmdline_file: /boot/firmware/cmdline.txt
     params_regexp: "^(.*)$"
   loop: "{{ boot_params }}"
-  no_log: true
   when: rpi_boot.stat.exists
 
 - include: add_param.yml
@@ -21,5 +20,4 @@
     cmdline_file: /boot/armbianEnv.txt
     params_regexp: "^extraargs=(.*)$"
   loop: "{{ boot_params }}"
-  no_log: true
   when: amrbian_boot.stat.exists
