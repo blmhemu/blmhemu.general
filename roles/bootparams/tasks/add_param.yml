@@ -13,5 +13,6 @@
     path: "{{ cmdline_file }}"
     regexp: "{{ params_regexp }}"
     line: '\1 {{ item }}"'
+  become: true
   when: param_check.found == 0
   notify: restart device
