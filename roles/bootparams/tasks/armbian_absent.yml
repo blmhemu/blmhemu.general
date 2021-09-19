@@ -11,7 +11,6 @@
 
 - name: Removing {{ item }}
   lineinfile:
-    backrefs: true
     path: "/boot/armbianEnv.txt"
     regexp: "^{{ item }}$"
     state: absent
@@ -23,8 +22,18 @@
   lineinfile:
     backrefs: true
     path: "/boot/armbianEnv.txt"
-    regexp: "^extraargs= *(.*){{ item }} *(.*)"
-    line: '\1\2'
+    regexp: "^extraargs= *((?: *\w)*) *{{ item }} *( \w(?: *\w)*)|$"
+    # regexp: "^extraargs= *(.*){{ item }} *(.*)"
+    line: 'extraargs=\1\2'
+  become: true
+  when: param_check.found > 0
+  notify: restart device
+
+- name: Remove extraaargs (if empty)
+  lineinfile:
+    path: "/boot/armbianEnv.txt"
+    regexp: "^extraargs= *$"
+    state: absent
   become: true
   when: param_check.found > 0
   notify: restart device
