@@ -13,7 +13,7 @@
   lineinfile:
     backrefs: true
     path: "/boot/armbianEnv.txt"
-    regexp: "^extraargs=(.*)$"
+    regexp: "^extraargs= *(.*\w)* *$"
     line: "extraargs=\1 {{ item }}"
   become: true
   when: param_check.found == 0
