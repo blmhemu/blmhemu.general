@@ -8,8 +8,16 @@
   stat: path=/boot/firmware/cmdline.txt
   register: amrbian_boot
 
-- include: rpi.yml
+- include: add_param.yml
+  vars:
+    cmdline_file: /boot/firmware/cmdline.txt
+    params_regexp: "^(.*)$"
+  with_items: "{{ boot_params }}"
   when: rpi_boot.stat.exists
 
-- include: armbian.yml
+- include: add_param.yml
+  vars:
+    cmdline_file: /boot/armbianEnv.txt
+    params_regexp: "^extraargs=(.*)$"
+  with_items: "{{ boot_params }}"
   when: amrbian_boot.stat.exists
