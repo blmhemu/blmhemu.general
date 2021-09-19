@@ -2,8 +2,7 @@
 
 - name: Setting params in /boot/firmware/cmdline.txt
   block:
-    - become: true
-      lineinfile:
+    - lineinfile:
         path: /proc/cmdline
         regexp: "(^|.* ){{item}}($| .*)"
         state: absent
