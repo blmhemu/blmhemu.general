@@ -1,6 +1,6 @@
 ---
 
-- name: Checking if {{ item }} already exists
+- name: Checking if {{ item }} present
   lineinfile:
     path: /proc/cmdline
     regexp: "(^|.* ){{ item }}( .*|$)"
@@ -12,9 +12,9 @@
 - name: Adding {{ item }}
   lineinfile:
     backrefs: true
-    path: "{{ cmdline_file }}"
-    regexp: "{{ params_regexp }}"
-    line: '\1 {{ item }}'
+    path: "/boot/armbianEnv.txt"
+    regexp: "^extraargs=(.*)$"
+    line: "extraargs=\1 {{ item }}"
   become: true
   when: param_check.found == 0
   notify: restart device

@@ -1,0 +1,20 @@
+---
+
+- name: Checking if {{ item }} already exists
+  lineinfile:
+    path: /proc/cmdline
+    regexp: "(^|.* ){{ item }}( .*|$)"
+    state: absent
+  check_mode: true
+  register: param_check
+  changed_when: false
+
+- name: Removing {{ item }}
+  lineinfile:
+    backrefs: true
+    path: "/boot/firmware/cmdline.txt"
+    regexp: " *(.*){{ item }} *(.*)"
+    line: '\1\2'
+  become: true
+  when: param_check.found > 0
+  notify: restart device

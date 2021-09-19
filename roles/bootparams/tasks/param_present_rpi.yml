@@ -1,0 +1,20 @@
+---
+
+- name: Checking if {{ item }} present
+  lineinfile:
+    path: /proc/cmdline
+    regexp: "(^|.* ){{ item }}( .*|$)"
+    state: absent
+  check_mode: true
+  register: param_check
+  changed_when: false
+
+- name: Adding {{ item }}
+  lineinfile:
+    backrefs: true
+    path: "/boot/firmware/cmdline.txt"
+    regexp: "^(.*)$"
+    line: '\1 {{ item }}'
+  become: true
+  when: param_check.found == 0
+  notify: restart device
