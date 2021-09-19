@@ -13,7 +13,7 @@
   lineinfile:
     backrefs: true
     path: "/boot/firmware/cmdline.txt"
-    regexp: " *( *[a-zA-Z._=])* *"
+    regexp: " *((?: *[a-zA-Z._=])*) *"
     line: '\1 {{ item }}'
   become: true
   when: param_check.found == 0

@@ -33,7 +33,7 @@
       lineinfile:
         backrefs: true
         path: "/boot/armbianEnv.txt"
-        regexp: "^extraargs= *( *[a-zA-Z._=])* *"
+        regexp: "^extraargs= *((?: *[a-zA-Z._=])*) *"
         line: 'extraargs=\1 {{ item }}'
       become: true
       when: extraargs_check.found > 0
