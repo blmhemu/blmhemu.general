@@ -2,7 +2,7 @@
 
 - lineinfile:
     path: /proc/cmdline
-    regexp: "(^|.* ){{ param }}($| .*)"
+    regexp: "(^|.* ){{ item }}($| .*)"
     state: absent
   check_mode: true
   register: param_check
