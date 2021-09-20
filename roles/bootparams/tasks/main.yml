@@ -32,6 +32,8 @@
       loop: "{{ boot_params_absent }}"
   when: rpi_boot.stat.exists
 
+- meta: flush_handlers
+
 - include: verify_present.yml
   loop: "{{ boot_params_present }}"
   when: verify_present
