@@ -1,0 +1,14 @@
+---
+
+- name: Verifying if {{ item }} present
+  lineinfile:
+    path: /proc/cmdline
+    regexp: "(^|.* ){{ item }}( .*|$)"
+    state: absent
+  check_mode: true
+  register: param_check
+  changed_when: false
+
+- name: Assert item present
+  assert:
+    that: param_check.found == 0

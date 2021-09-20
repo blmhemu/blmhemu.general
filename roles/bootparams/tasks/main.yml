@@ -31,3 +31,11 @@
     - include: rpi_absent.yml
       loop: "{{ boot_params_absent }}"
   when: rpi_boot.stat.exists
+
+- include: verify_present.yml
+  loop: "{{ boot_params_present }}"
+  when: verify_present
+
+- include: verify_absent.yml
+  loop: "{{ boot_params_absent }}"
+  when: verify_absent

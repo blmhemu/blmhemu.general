@@ -1,5 +1,9 @@
 ---
 
+# The important ones
 boot_params_present: []
-
 boot_params_absent: []
+
+# Secondary params
+verify_present: true
+verify_absent: true
