@@ -22,8 +22,8 @@
       lineinfile:
         backrefs: true
         path: "/boot/armbianEnv.txt"
-        regexp: "^extraargs= *([a-zA-Z._=](?: *[a-zA-Z._=])* )? *{{ item }} *([a-zA-Z._=](?: *[a-zA-Z._=])*)?"
-        line: 'extraargs=\1\2'
+        regexp: "^extraargs= *([^\\s](?: *[^\\s])*)? *{{ item }} *([^\\s](?: *[^\\s])*)?"
+        line: 'extraargs=\1 \2'
       become: true
       notify: restart device
 
@@ -31,7 +31,7 @@
       lineinfile:
         backrefs: true
         path: "/boot/armbianEnv.txt"
-        regexp: "^extraargs= *((?: *[a-zA-Z._=])*)"
+        regexp: "^extraargs= *((?: *[^\\s])*)"
         line: 'extraargs=\1'
       become: true
       notify: restart device
