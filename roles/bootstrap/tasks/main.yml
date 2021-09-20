@@ -4,14 +4,16 @@
   become: true
   community.general.timezone:
     name: "{{ bootstrap_time_zone }}"
+  notify: reboot device
 
 - name: Set locale
   become: true
   locale_gen:
     name: "{{ bootstrap_locale }}"
     state: present
+  notify: reboot device
 
-- name: Ensure hostname is properly set
+- name: Set hostname
   become: true
   hostname:
     name: "{{ bootstrap_hostname }}"
