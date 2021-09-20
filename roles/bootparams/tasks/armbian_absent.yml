@@ -31,7 +31,7 @@
       lineinfile:
         backrefs: true
         path: "/boot/armbianEnv.txt"
-        regexp: "^extraargs= *((?: *[^\\s])*)"
+        regexp: "^extraargs= *([^\\s](?: *[^\\s])*)"
         line: 'extraargs=\1'
       become: true
       notify: restart device
