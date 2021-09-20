@@ -21,10 +21,9 @@
 
     - name: Adding extraaargs
       lineinfile:
-        backrefs: true
         path: "/boot/armbianEnv.txt"
-        regexp: "^extraargs="
         line: 'extraargs={{ item }}'
+        state: present
       become: true
       when: extraargs_check.found == 0
       notify: restart device
