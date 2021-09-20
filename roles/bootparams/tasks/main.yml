@@ -42,9 +42,13 @@
 - name: Verify if params present
   include: verify_present.yml
   loop: "{{ boot_params_present }}"
-  when: verify_present | bool
+  when:
+    - boot_params_present | length > 0
+    - verify_present | bool
 
 - name: Verify if params absent
   include: verify_absent.yml
   loop: "{{ boot_params_absent }}"
-  when: verify_absent | bool
+  when:
+    - boot_params_absent | length > 0
+    - verify_absent | bool
