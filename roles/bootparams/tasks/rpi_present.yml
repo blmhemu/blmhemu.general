@@ -19,9 +19,11 @@
   when: check_system.found == 0
   changed_when: false
 
-- name: Notify reboot if {{ item }} found
-  when: 
+- name: Notify reboot if found
+  debug: msg="Notify reboot if required"
+  changed_when:
     - check_user is defined
+    - check_user.found is defined
     - check_user.found > 0
   notify: restart device
 
@@ -32,5 +34,5 @@
     regexp: "([^\\s](?: *[^\\s])*)"
     line: '\1 {{ item }}'
   become: true
-  when: check_user is not defined or check_user.found == 0
+  when: check_user is not defined or (check_user.found is defined and check_user.found == 0)
   notify: restart device
