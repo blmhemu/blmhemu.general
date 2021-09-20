@@ -14,7 +14,8 @@
       lineinfile:
         backrefs: true
         path: "/boot/firmware/cmdline.txt"
-        regexp: "^ *([a-zA-Z._=](?: *[a-zA-Z._=])* )? *{{ item }} *([a-zA-Z._=](?: *[a-zA-Z._=])*)?"
+        regexp: "^ *([^\s](?: *[^\s])* )? *{{ item }} *([^\s](?: *[^\s])*)?"
+        # regexp: "^ *([a-zA-Z._=](?: *[a-zA-Z._=])* )? *{{ item }} *([a-zA-Z._=](?: *[a-zA-Z._=])*)?"
         line: '\1\2'
       become: true
       notify: restart device
