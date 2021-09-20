@@ -1,20 +1,36 @@
 ---
 
-- name: Checking if {{ item }} present
+- name: Checking if {{ item }} present in system
   lineinfile:
     path: /proc/cmdline
     regexp: "(^|.* ){{ item }}( .*|$)"
     state: absent
   check_mode: true
-  register: param_check
+  register: check_system
   changed_when: false
+
+- name: Checking if {{ item }} present in user-defined
+  lineinfile:
+    path: /boot/firmware/cmdline.txt
+    regexp: "(^|.* ){{ item }}( .*|$)"
+    state: absent
+  check_mode: true
+  register: check_user
+  when: check_system.found == 0
+  changed_when: false
+
+- name: Notify reboot if {{ item }} found
+  when: 
+    - check_user is defined
+    - check_user.found > 0
+  notify: restart device
 
 - name: Adding {{ item }}
   lineinfile:
     backrefs: true
-    path: "/boot/firmware/cmdline.txt"
+    path: /boot/firmware/cmdline.txt
     regexp: "([^\\s](?: *[^\\s])*)"
     line: '\1 {{ item }}'
   become: true
-  when: param_check.found == 0
+  when: check_user is not defined or check_user.found == 0
   notify: restart device

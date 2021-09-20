@@ -42,7 +42,6 @@
         state: present
       become: true
       when: extraargs_check.found == 0
-      notify: restart device
 
     - name: Adding {{ item }}
       lineinfile:
@@ -52,5 +51,5 @@
         line: 'extraargs=\1 {{ item }}'
       become: true
       when: extraargs_check.found > 0
-      notify: restart device
   when: check_user is not defined or check_user.found == 0
+  notify: restart device
