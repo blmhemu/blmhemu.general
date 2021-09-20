@@ -2,4 +2,4 @@
 
 - name: restart device
   become: true
-  debug: msg="Yeah"
+  reboot:
