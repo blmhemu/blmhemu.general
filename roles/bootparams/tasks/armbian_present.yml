@@ -13,7 +13,7 @@
     - name: Checking if extraargs present
       lineinfile:
         path: /boot/armbianEnv.txt
-        regexp: "^extraargs=.*"
+        regexp: "^extraargs="
         state: absent
       check_mode: true
       register: extraargs_check
@@ -23,7 +23,7 @@
       lineinfile:
         backrefs: true
         path: "/boot/armbianEnv.txt"
-        regexp: "^extraargs=.*$"
+        regexp: "^extraargs="
         line: 'extraargs={{ item }}'
       become: true
       when: extraargs_check.found == 0
@@ -33,7 +33,7 @@
       lineinfile:
         backrefs: true
         path: "/boot/armbianEnv.txt"
-        regexp: "^extraargs= *((?: *[a-zA-Z._=])*) *"
+        regexp: "^extraargs= *([^\\s](?: *[^\\s])*)"
         line: 'extraargs=\1 {{ item }}'
       become: true
       when: extraargs_check.found > 0
