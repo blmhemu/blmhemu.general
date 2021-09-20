@@ -12,7 +12,7 @@
 - name: Checking if {{ item }} present in user-defined
   lineinfile:
     path: /boot/armbianEnv.txt
-    regexp: "(^|.* ){{ item }}( .*|$)"
+    regexp: "(^|.*[ =]){{ item }}( .*|$)"
     state: absent
   check_mode: true
   register: check_user
