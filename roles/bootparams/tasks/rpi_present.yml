@@ -25,7 +25,7 @@
     - check_user is defined
     - check_user.found is defined
     - check_user.found > 0
-  notify: restart device
+  notify: reboot device
 
 - name: Adding {{ item }}
   lineinfile:
@@ -35,4 +35,4 @@
     line: '\1 {{ item }}'
   become: true
   when: check_user is not defined or (check_user.found is defined and check_user.found == 0)
-  notify: restart device
+  notify: reboot device

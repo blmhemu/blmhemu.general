@@ -25,7 +25,7 @@
     - check_user is defined
     - check_user.found is defined
     - check_user.found > 0
-  notify: restart device
+  notify: reboot device
 
 - block:
     - name: Checking if extraargs present
@@ -54,4 +54,4 @@
       become: true
       when: extraargs_check.found > 0
   when: check_user is not defined or (check_user.found is defined and check_user.found == 0)
-  notify: restart device
+  notify: reboot device

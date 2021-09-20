@@ -16,7 +16,7 @@
         regexp: "^{{ item }}$"
         state: absent
       become: true
-      notify: restart device
+      notify: reboot device
 
     - name: Removing {{ item }} from extraargs
       lineinfile:
@@ -25,7 +25,7 @@
         regexp: "^extraargs= *([^\\s](?: *[^\\s])*)? *{{ item }} *([^\\s](?: *[^\\s])*)?"
         line: 'extraargs=\1 \2'
       become: true
-      notify: restart device
+      notify: reboot device
 
     - name: Cleanup extraargs
       lineinfile:
@@ -34,7 +34,7 @@
         regexp: "^extraargs= *([^\\s](?: *[^\\s])*)"
         line: 'extraargs=\1'
       become: true
-      notify: restart device
+      notify: reboot device
 
     - name: Remove extraaargs (if empty)
       lineinfile:
@@ -42,5 +42,5 @@
         regexp: "^extraargs= *$"
         state: absent
       become: true
-      notify: restart device
+      notify: reboot device
   when: param_check.found > 0

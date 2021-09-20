@@ -17,7 +17,7 @@
         regexp: "([^\\s](?: *[^\\s])*)? *{{ item }} *([^\\s](?: *[^\\s])*)?"
         line: '\1 \2'
       become: true
-      notify: restart device
+      notify: reboot device
 
     - name: Cleanup boot params
       lineinfile:
@@ -26,5 +26,5 @@
         regexp: "([^\\s](?: *[^\\s])*)"
         line: '\1'
       become: true
-      notify: restart device
+      notify: reboot device
   when: param_check.found > 0
