@@ -1,0 +1,13 @@
+---
+
+- name: Ensure locale exists
+  become: true
+  community.general.locale_gen:
+    name: "{{ bootstrap_locale }}"
+    state: present
+
+- name: Set hostname
+  become: true
+  hostname:
+    name: "{{ bootstrap_hostname }}"
+  notify: reboot device

@@ -1,20 +1,8 @@
 ---
 
-- name: Set timezone
-  become: true
-  community.general.timezone:
-    name: "{{ bootstrap_time_zone }}"
-  notify: reboot device
+- name: Setup common tasks
+  include: common.yml
 
-- name: Set locale
-  become: true
-  locale_gen:
-    name: "{{ bootstrap_locale }}"
-    state: present
-  notify: reboot device
-
-- name: Set hostname
-  become: true
-  hostname:
-    name: "{{ bootstrap_hostname }}"
-  notify: reboot device
+- name: Setup distro specific tasks | Debian (Ubuntu)
+  include: debian.yml
+  when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
