@@ -1,6 +1,0 @@
----
-
-dependencies:
-  - src: https://github.com/angstwad/docker.ubuntu.git
-    scm: git
-    version: v2.3.0
