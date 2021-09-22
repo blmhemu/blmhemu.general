@@ -22,12 +22,8 @@
   changed_when: reboot_required_file.stat.exists
   notify: reboot device
 
-- name: Remove useless packages from the cache
+- name: Remove useless packages and deps
   become: true
   apt:
     autoclean: yes
-
-- name: Remove useless dependencies
-  become: true
-  apt:
     autoremove: yes
