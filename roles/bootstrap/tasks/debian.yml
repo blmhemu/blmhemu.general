@@ -23,9 +23,11 @@
   notify: reboot device
 
 - name: Remove useless packages from the cache
+  become: true
   apt:
     autoclean: yes
 
 - name: Remove useless dependencies
+  become: true
   apt:
     autoremove: yes
