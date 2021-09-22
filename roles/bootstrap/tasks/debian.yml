@@ -25,5 +25,5 @@
 - name: Remove useless packages and deps
   become: true
   apt:
-    autoclean: yes
     autoremove: yes
+    autoclean: yes
