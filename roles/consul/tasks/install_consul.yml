@@ -1,0 +1,46 @@
+---
+
+- name: Remove existing version
+  become: true
+  file:
+    path: "{{ consul_bin_path }}/consul"
+    state: absent
+
+- name: Create temporary build directory
+  ansible.builtin.tempfile:
+    state: directory
+    suffix: .consul
+  register: tempfolder
+  changed_when: false
+
+- name: Download consul checksum
+  get_url:
+    url: "{{ consul_checksum_url }}"
+    dest: "{{ tempfolder.path }}/{{ consul_checksum_name }}"
+
+- name: Extract checksum
+  shell: grep "{{ consul_pkg_name }}" "{{ tempfolder.path }}/{{ consul_checksum_name }}" | awk '{print $1}'
+  changed_when: false
+  register: checksum
+
+- name: Download consul package
+  get_url:
+    url: "{{ consul_pkg_url }}"
+    checksum: "sha256:{{ checksum.stdout }}"
+    dest: "{{ tempfolder.path }}/{{ consul_pkg_name }}"
+
+- name: Extract to required location
+  become: true
+  ansible.builtin.unarchive:
+    remote_src: true
+    src: "{{ tempfolder.path }}/{{ consul_pkg_name }}"
+    dest: "{{ consul_bin_path }}"
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
+    mode: 0755
+  notify: restart consul
+
+- name: Remove tmp dirs
+  file:
+    path: "{{ tempfolder.path }}"
+    state: absent

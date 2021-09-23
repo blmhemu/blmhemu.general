@@ -1,11 +1,11 @@
 ---
 
 - name: Check current version
-  shell: consul -v 2>&1
+  command: consul version -format=json
+  changed_when: false
   register: consul_existing_version
 
-- name: Install if version mismatch
-  block:
-    - debug: msg="Installing"
-  when: consul_version_v not in consul_existing_version.stdout
-
+- block:
+    - name: Install consul
+      include_tasks: install_consul.yml
+  when: consul_version == (consul_existing_version.stdout | from_json).Version
