@@ -35,8 +35,8 @@
     remote_src: true
     src: "{{ tempfolder.path }}/{{ consul_pkg_name }}"
     dest: "{{ consul_bin_path }}"
-    owner: "{{ consul_user }}"
-    group: "{{ consul_group }}"
+    owner: root
+    group: root
     mode: 0755
   notify: restart consul
 
