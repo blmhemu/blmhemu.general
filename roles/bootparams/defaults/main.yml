@@ -1,9 +1,10 @@
 ---
 
-# The important ones
+# Configurable params
 boot_params_present: []
 boot_params_absent: []
 
+# Advanced params
 # Params to check if the task was successful
 verify_present: true
 verify_absent: true

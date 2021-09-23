@@ -2,10 +2,10 @@
 
 # Note: Use https://github.com/geerlingguy/ansible-role-ntp for time zone and NTP setup
 
-# Primary params
+# Configurable params
 bootstrap_locale: en_US.UTF-8
 bootstrap_hostname: "{{ inventory_hostname }}"
 
-# Secondary params
+# Advanced params
 bootstrap_apt_retries: 5
 bootstrap_apt_retry_delay: 30

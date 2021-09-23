@@ -1,0 +1,68 @@
+---
+
+- name: Check if plugin exists
+  stat:
+    path: "{{ cni_path }}/loopback"
+  register: loopback_plugin
+
+- name: Check existing plugin version
+  shell: "{{ cni_path }}/loopback 2>&1"
+  register: cni_existing_version
+  changed_when: false
+  when: loopback_plugin.stat.exists
+
+- block:
+    - name: Remove existing version
+      become: true
+      file:
+        path: "{{ cni_path }}"
+        state: absent
+
+    - name: Ensure path exists
+      become: true
+      file:
+        path: "{{ cni_path }}"
+        state: directory
+        mode: 0755
+        owner: "{{ cni_user }}"
+        group: "{{ cni_group }}"
+      register: cni_path_exists
+
+    - name: Create temporary build directory
+      ansible.builtin.tempfile:
+        state: directory
+        suffix: .cni
+      register: tempfolder
+      changed_when: false
+
+    - name: Download CNI checksum
+      get_url:
+        url: "{{ cni_checksum_url }}"
+        dest: "{{ tempfolder.path }}/{{ cni_checksum_name }}"
+
+    - name: Extract checksum
+      command: awk '{print $1}' "{{ tempfolder.path }}/{{ cni_checksum_name }}"
+      changed_when: false
+      register: checksum
+
+    - name: Download CNI package
+      get_url:
+        url: "{{ cni_pkg_url }}"
+        checksum: "sha256:{{ checksum.stdout }}"
+        dest: "{{ tempfolder.path }}/{{ cni_pkg_name }}"
+
+    - name: Extract to required location
+      become: true
+      ansible.builtin.unarchive:
+        remote_src: true
+        src: "{{ tempfolder.path }}/{{ cni_pkg_name }}"
+        dest: "{{ cni_path }}"
+        owner: "{{ cni_user }}"
+        group: "{{ cni_group }}"
+        mode: 0755
+
+    - name: Remove tmp dirs
+      file:
+        path: "{{ tempfolder.path }}"
+        state: absent
+  when: not loopback_plugin.stat.exists or cni_version_v not in cni_existing_version.stdout
