@@ -4,5 +4,11 @@
 consul_version: 1.10.2
 
 # Advanced params
+consul_arch_map:
+  amd64: amd64
+  x86_64: amd64
+  armv7l: arm
+  aarch64: arm64
+  32-bit: "386"
+  64-bit: amd64
 consul_version_v: v"{{ consul_version }}"
-

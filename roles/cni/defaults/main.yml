@@ -4,7 +4,7 @@
 cni_version: 1.0.1
 
 # Advanced params
-arch_map:
+cni_arch_map:
   amd64: amd64
   x86_64: amd64
   armv7l: arm
@@ -15,7 +15,7 @@ cni_path: /opt/cni/bin
 cni_user: root
 cni_group: root
 cni_version_v: v{{ cni_version }}
-cni_pkg_name: cni-plugins-linux-{{ arch_map[ansible_architecture] }}-{{ cni_version_v }}.tgz
+cni_pkg_name: cni-plugins-linux-{{ cni_arch_map[ansible_architecture] }}-{{ cni_version_v }}.tgz
 cni_checksum_name: "{{ cni_pkg_name }}.sha256"
 cni_pkg_url: https://github.com/containernetworking/plugins/releases/download/{{ cni_version_v }}/{{ cni_pkg_name }}
 cni_checksum_url: https://github.com/containernetworking/plugins/releases/download/{{ cni_version_v }}/{{ cni_checksum_name }}
