@@ -1,0 +1,11 @@
+---
+
+- name: Check current version
+  shell: consul -v 2>&1
+  register: consul_existing_version
+
+- name: Install if version mismatch
+  block:
+    - debug: msg="Installing"
+  when: consul_version_v not in consul_existing_version.stdout
+

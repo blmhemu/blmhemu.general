@@ -1,0 +1,8 @@
+---
+
+# Configurable params
+consul_version: 1.10.2
+
+# Advanced params
+consul_version_v: v"{{ consul_version }}"
+
