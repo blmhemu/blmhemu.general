@@ -1,13 +1,17 @@
 ---
 
+- name: Check if consul exists
+  stat:
+    path: "{{ consul_bin_path }}/consul"
+  register: consul_bin_file
+
 - name: Check current version
-  command: consul version -format=json
+  command: "{{ consul_bin_path }}/consul version -format=json"
   changed_when: false
   register: consul_existing_version
-
-- debug: var=consul_version
+  when: consul_bin_file.stat.exists
 
 - block:
     - name: Install consul
       include_tasks: install_consul.yml
-  when: consul_version == (consul_existing_version.stdout | from_json).Version
+  when: not consul_bin_file.stat.exists or consul_version != (consul_existing_version.stdout | from_json).Version
