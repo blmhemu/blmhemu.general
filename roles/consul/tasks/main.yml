@@ -5,6 +5,8 @@
   changed_when: false
   register: consul_existing_version
 
+- debug: var=consul_version
+
 - block:
     - name: Install consul
       include_tasks: install_consul.yml
