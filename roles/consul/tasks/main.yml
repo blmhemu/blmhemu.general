@@ -1,5 +1,9 @@
 ---
 
+- name: Ensure encrypt key exists
+  assert:
+    that: consul_encrypt_key | length > 0
+
 - name: Check if consul exists
   stat:
     path: "{{ consul_bin_path }}/consul"

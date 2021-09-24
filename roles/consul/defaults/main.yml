@@ -2,6 +2,7 @@
 
 # Configurable params
 consul_version: 1.10.2
+consul_encrypt_key: ""
 
 # Advanced params
 consul_arch_map:
