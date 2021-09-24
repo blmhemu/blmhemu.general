@@ -3,3 +3,18 @@
 consul_bin_path: /usr/bin
 consul_bin_user: root
 consul_bin_group: root
+consul_servers: "\
+  {% set _servers = [ ] %}\
+  {% for host in play_hosts %}\
+    {% if hostvars[host]['consul_role'] == 'server' %}\
+      {% set _ = _servers.append(host) %}\
+    {% endif %}\
+  {% endfor %}\
+  {{ _servers }}"
+consul_retry_join: "\
+  {% set _consul_join = [ ] %}\
+  {% for server in consul_servers %}\
+    {% set _ = _consul_join.append(hostvars[server]['consul_advertise_addr'] | default(hostvars[server]['consul_bind_addr']) | default(hostvars[server]['ansible_default_ipv4']['address']) | mandatory) %}\
+  {% endfor %}\
+  {{ _consul_join }}"
+consul_bootstrap_expect: "{{ consul_servers | length }}"

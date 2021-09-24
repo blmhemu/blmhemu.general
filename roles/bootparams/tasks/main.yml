@@ -36,7 +36,7 @@
       loop: "{{ boot_params_absent }}"
   when: rpi_boot.stat.exists
 
-- name: Run handlers
+- name: Flush handlers
   meta: flush_handlers
 
 - name: Verify if params present

@@ -24,3 +24,18 @@
 
 - name: Install required config
   include_tasks: install_config.yml
+
+- name: Enable consul service
+  become: true
+  ansible.builtin.service:
+    name: consul
+    enabled: true
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Ensure consul service is started
+  become: true
+  ansible.builtin.service:
+    name: consul
+    state: started

@@ -1,6 +1,7 @@
 ---
 
 - name: Ensure config and data dirs exist
+  become: true
   file:
     path: "{{ item }}"
     state: directory
@@ -8,30 +9,49 @@
     group: "{{ consul_group }}"
     mode: 0755
   with_items:
-    - consul_config_dir
-    - consul_data_dir
+    - "{{ consul_config_dir }}"
+    - "{{ consul_data_dir }}"
 
 - name: Ensure config consul.hcl
+  become: true
   template:
     src: consul.hcl.j2
     dest: "{{ consul_config_dir }}/consul.hcl"
     owner: "{{ consul_user }}"
     group: "{{ consul_group }}"
     mode: 0640
+  notify: restart consul
 
-- name: Ensure config server.hcl
+- name: Ensure config server.hcl present
+  become: true
   template:
     src: server.hcl.j2
     dest: "{{ consul_config_dir }}/server.hcl"
     owner: "{{ consul_user }}"
     group: "{{ consul_group }}"
     mode: 0640
-  when: consul_role == "server"
+  when: consul_role == 'server'
+  notify: restart consul
 
-- name: Ensure config server.hcl
+- name: Ensure config server.hcl absent
+  become: true
+  file:
+    path: "{{ consul_config_dir }}/server.hcl"
+    state: absent
+  when: consul_role != 'server'
+  notify: restart consul
+
+- name: Ensure consul service file present
+  become: true
   template:
     src: consul.service.j2
     dest: "{{ consul_systemd_dir }}/consul.service"
     owner: root
     group: root
     mode: 0644
+  notify: restart consul
+
+- name: Validate config
+  become: true
+  command: "consul validate {{ consul_config_dir }}"
+  changed_when: false
