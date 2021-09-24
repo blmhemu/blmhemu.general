@@ -2,6 +2,7 @@
 
 # Configurable params
 consul_version: 1.10.2
+consul_data_dir: /opt/_consul
 
 # Advanced params
 consul_arch_map:
@@ -11,9 +12,10 @@ consul_arch_map:
   aarch64: arm64
   32-bit: "386"
   64-bit: amd64
-consul_user: root
-consul_group: root
+consul_config_dir: /etc/_consul.d
+consul_user: _consul
+consul_group: _consul
 consul_pkg_name: consul_{{ consul_version }}_linux_{{ consul_arch_map[ansible_architecture] }}.zip
 consul_checksum_name: consul_{{ consul_version }}_SHA256SUMS
-consul_pkg_url: https://releases.hashicorp.com/consul/{{ consul_version }}/{{ consul_pkg_name }}
-consul_checksum_url: https://releases.hashicorp.com/consul/{{ consul_version }}/{{ consul_checksum_name }}
+consul_pkg_url: https://releases.hashicorp.com/_consul/{{ consul_version }}/{{ consul_pkg_name }}
+consul_checksum_url: https://releases.hashicorp.com/_consul/{{ consul_version }}/{{ consul_checksum_name }}

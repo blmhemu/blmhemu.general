@@ -3,17 +3,17 @@
 - name: Remove existing version
   become: true
   file:
-    path: "{{ consul_bin_path }}/consul"
+    path: "{{ consul_bin_path }}/_consul"
     state: absent
 
 - name: Create temporary build directory
   ansible.builtin.tempfile:
     state: directory
-    suffix: .consul
+    suffix: ._consul
   register: tempfolder
   changed_when: false
 
-- name: Download consul checksum
+- name: Download _consul checksum
   get_url:
     url: "{{ consul_checksum_url }}"
     dest: "{{ tempfolder.path }}/{{ consul_checksum_name }}"
@@ -23,7 +23,7 @@
   changed_when: false
   register: checksum
 
-- name: Download consul package
+- name: Download _consul package
   get_url:
     url: "{{ consul_pkg_url }}"
     checksum: "sha256:{{ checksum.stdout }}"
@@ -38,7 +38,7 @@
     owner: root
     group: root
     mode: 0755
-  notify: restart consul
+  notify: restart _consul
 
 - name: Remove tmp dirs
   file:
