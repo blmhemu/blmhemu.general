@@ -18,5 +18,6 @@ consul_bin_user: root
 consul_bin_group: root
 consul_pkg_name: consul_{{ consul_version }}_linux_{{ consul_arch_map[ansible_architecture] }}.zip
 consul_checksum_name: consul_{{ consul_version }}_SHA256SUMS
-consul_pkg_url: https://releases.hashicorp.com/consul/{{ consul_version }}/{{ consul_pkg_name }}
-consul_checksum_url: https://releases.hashicorp.com/consul/{{ consul_version }}/{{ consul_checksum_name }}
+consul_base_url: https://releases.hashicorp.com/consul/{{ consul_version }}
+consul_pkg_url: {{ consul_base_url }}/{{ consul_pkg_name }}
+consul_checksum_url: {{ consul_base_url }}/{{ consul_checksum_name }}
