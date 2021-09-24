@@ -10,3 +10,20 @@
   with_items:
     - consul_config_dir
     - consul_data_dir
+
+- name: Ensure config consul.hcl
+  template:
+    src: consul.hcl.j2
+    dest: "{{ consul_config_dir }}/consul.hcl"
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
+    mode: 0640
+
+- name: Ensure config server.hcl
+  template:
+    src: server.hcl.j2
+    dest: "{{ consul_config_dir }}/server.hcl"
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
+    mode: 0640
+  when: consul_role == "server"
