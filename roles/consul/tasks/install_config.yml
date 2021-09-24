@@ -1,0 +1,9 @@
+---
+
+- name: Ensure config dir exists
+  file:
+    path: "{{ consul_config_dir }}"
+    state: directory
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
+    mode: 0755

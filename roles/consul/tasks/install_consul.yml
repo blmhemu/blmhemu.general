@@ -29,14 +29,28 @@
     checksum: "sha256:{{ checksum.stdout }}"
     dest: "{{ tempfolder.path }}/{{ consul_pkg_name }}"
 
+- name: Check if binary directory exists
+  stat:
+    path: "{{ consul_bin_path }}"
+  register: consul_bin_path_stat
+
+- name: Create binary directory if not exists
+  file:
+    path: "{{ consul_bin_path }}"
+    state: directory
+    owner: "{{ consul_bin_user }}"
+    group: "{{ consul_bin_group }}"
+    mode: 0755
+  when: not consul_bin_path_stat.stat.exists
+
 - name: Extract to required location
   become: true
   ansible.builtin.unarchive:
     remote_src: true
     src: "{{ tempfolder.path }}/{{ consul_pkg_name }}"
     dest: "{{ consul_bin_path }}"
-    owner: root
-    group: root
+    owner: "{{ consul_bin_user }}"
+    group: "{{ consul_bin_group }}"
     mode: 0755
   notify: restart consul
 

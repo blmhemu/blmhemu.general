@@ -11,6 +11,11 @@ consul_arch_map:
   aarch64: arm64
   32-bit: "386"
   64-bit: amd64
+consul_user: consul
+consul_group: consul
+consul_bin_path: /usr/bin
+consul_bin_user: root
+consul_bin_group: root
 consul_pkg_name: consul_{{ consul_version }}_linux_{{ consul_arch_map[ansible_architecture] }}.zip
 consul_checksum_name: consul_{{ consul_version }}_SHA256SUMS
 consul_pkg_url: https://releases.hashicorp.com/consul/{{ consul_version }}/{{ consul_pkg_name }}
