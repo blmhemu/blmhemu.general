@@ -21,6 +21,7 @@ consul_user: consul
 consul_group: consul
 consul_config_dir: /etc/consul.d
 consul_data_dir: /opt/consul
+consul_systemd_dir: /usr/lib/systemd/system
 consul_pkg_name: consul_{{ consul_version }}_linux_{{ consul_arch_map[ansible_architecture] }}.zip
 consul_checksum_name: consul_{{ consul_version }}_SHA256SUMS
 consul_base_url: https://releases.hashicorp.com/consul/{{ consul_version }}

@@ -27,3 +27,11 @@
     group: "{{ consul_group }}"
     mode: 0640
   when: consul_role == "server"
+
+- name: Ensure config server.hcl
+  template:
+    src: consul.service.j2
+    dest: "{{ consul_systemd_dir }}/consul.service"
+    owner: root
+    group: root
+    mode: 0644
