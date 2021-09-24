@@ -1,9 +1,12 @@
 ---
 
-- name: Ensure config dir exists
+- name: Ensure config and data dirs exist
   file:
-    path: "{{ consul_config_dir }}"
+    path: "{{ item }}"
     state: directory
     owner: "{{ consul_user }}"
     group: "{{ consul_group }}"
     mode: 0755
+  with_items:
+    - consul_config_dir
+    - consul_data_dir

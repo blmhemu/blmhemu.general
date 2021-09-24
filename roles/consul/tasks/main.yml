@@ -1,5 +1,8 @@
 ---
 
+- name: Ensure users and groups exists
+  include_tasks: user_group.yml
+
 - name: Check if consul exists
   stat:
     path: "{{ consul_bin_path }}/consul"
@@ -15,3 +18,5 @@
     - name: Install consul
       include_tasks: install_consul.yml
   when: not consul_bin_file.stat.exists or consul_version != (consul_existing_version.stdout | from_json).Version
+
+- include_tasks: install_config.yml
