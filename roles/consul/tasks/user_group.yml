@@ -5,31 +5,11 @@
     name: "{{ consul_group }}"
     state: present
 
-- name: Ensure bin group exists
-  group:
-    name: "{{ consul_bin_group }}"
-    state: present
-  when: consul_bin_group != "root"
-
 - name: Ensure consul user exists
   ansible.builtin.user:
     name: "{{ consul_user }}"
-    home: "{{ consul_config_dir }}"
-    shell: /bin/false
     group: "{{ consul_group }}"
-
-- name: Ensure bin user exists
-  ansible.builtin.user:
-    name: "{{ consul_bin_user }}"
-    create_home: false
-    group: "{{ consul_bin_group }}"
-  when: consul_bin_user != "root"
-
-- name: Ensure bin user exists
-  ansible.builtin.user:
-    name: "{{ consul_bin_user }}"
-    create_home: false
-    groups: "{{ consul_bin_group }}"
-    append: true
-  when: consul_bin_user == "root"
-
+    home: "{{ consul_config_dir }}"
+    comment: "Consul user"
+    system: true
+    shell: /bin/false

@@ -1,0 +1,5 @@
+---
+
+consul_bin_path: /usr/bin
+consul_bin_user: root
+consul_bin_group: root

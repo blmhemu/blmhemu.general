@@ -26,15 +26,15 @@
 - name: Download consul package
   get_url:
     url: "{{ consul_pkg_url }}"
-    checksum: "sha256:{{ checksum.stdout }}"
     dest: "{{ tempfolder.path }}/{{ consul_pkg_name }}"
+    checksum: "sha256:{{ checksum.stdout }}"
 
-- name: Check if binary directory exists
+- name: Check if bin dir exists
   stat:
     path: "{{ consul_bin_path }}"
   register: consul_bin_path_stat
 
-- name: Create binary directory if not exists
+- name: Create bin dir if not exists
   file:
     path: "{{ consul_bin_path }}"
     state: directory
@@ -43,7 +43,7 @@
     mode: 0755
   when: not consul_bin_path_stat.stat.exists
 
-- name: Extract to required location
+- name: Extract to bin dir
   become: true
   ansible.builtin.unarchive:
     remote_src: true
@@ -54,7 +54,7 @@
     mode: 0755
   notify: restart consul
 
-- name: Remove tmp dirs
+- name: Remove temporary build directory
   file:
     path: "{{ tempfolder.path }}"
     state: absent
