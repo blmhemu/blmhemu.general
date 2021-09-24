@@ -1,6 +1,6 @@
 ---
 
-- name: restart _consul
+- name: restart consul
   ansible.builtin.service:
-    name: _consul
+    name: consul
     state: restarted
