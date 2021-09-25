@@ -1,4 +1,5 @@
 server {
   enabled = true
   bootstrap_expect = {{ nomad_bootstrap_expect | int }}
+  encrypt = "{{ nomad_encrypt_key }}"
 }

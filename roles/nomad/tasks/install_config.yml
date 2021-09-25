@@ -17,7 +17,7 @@
     group: "{{ nomad_group }}"
     mode: 0700
 
-- name: Ensure config nomad.hcl
+- name: Ensure config nomad.hcl present
   become: true
   template:
     src: nomad.hcl.j2
@@ -26,7 +26,7 @@
     group: "{{ nomad_group }}"
   notify: restart nomad
 
-- name: Ensure config client.hcl
+- name: Ensure config client.hcl present
   become: true
   template:
     src: client.hcl.j2
