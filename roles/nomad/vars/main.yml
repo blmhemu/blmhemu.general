@@ -1,0 +1,23 @@
+---
+
+nomad_bin_dir: /usr/local/bin
+nomad_bin_user: root
+nomad_bin_group: root
+nomad_user: root
+nomad_group: root
+
+nomad_servers: "\
+  {% set _servers = [ ] %}\
+  {% for host in play_hosts %}\
+    {% if hostvars[host]['nomad_role'] == 'server' %}\
+      {% set _ = _servers.append(host) %}\
+    {% endif %}\
+  {% endfor %}\
+  {{ _servers }}"
+nomad_retry_join: "\
+  {% set _nomad_join = [ ] %}\
+  {% for server in nomad_servers %}\
+    {% set _ = _nomad_join.append(hostvars[server]['nomad_advertise_addr'] | default(hostvars[server]['nomad_bind_addr']) | default(hostvars[server]['ansible_default_ipv4']['address']) | mandatory) %}\
+  {% endfor %}\
+  {{ _nomad_join }}"
+nomad_bootstrap_expect: "{{ nomad_servers | length }}"

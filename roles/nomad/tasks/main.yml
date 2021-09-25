@@ -1,0 +1,41 @@
+---
+
+- name: Ensure encrypt-key and role exists
+  assert:
+    that: nomad_encrypt_key | length > 0 and (nomad_role == "server" or nomad_role == "client")
+
+- name: Check if nomad exists
+  stat:
+    path: "{{ nomad_bin_dir }}/nomad"
+  register: nomad_bin_file
+
+- name: Check current version
+  command: "{{ nomad_bin_dir }}/nomad version -format=json"
+  changed_when: false
+  register: nomad_existing_version
+  when: nomad_bin_file.stat.exists
+
+- name: Install nomad binary
+  include_tasks: install_nomad.yml
+  when: not nomad_bin_file.stat.exists or nomad_version not in nomad_existing_version.stdout
+
+- name: Ensure users and groups exists
+  include_tasks: user_group.yml
+
+- name: Install required config
+  include_tasks: install_config.yml
+
+- name: Enable nomad service
+  become: true
+  ansible.builtin.service:
+    name: nomad
+    enabled: true
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Ensure nomad service is started
+  become: true
+  ansible.builtin.service:
+    name: nomad
+    state: started

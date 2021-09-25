@@ -1,0 +1,60 @@
+---
+
+- name: Remove existing version
+  become: true
+  file:
+    path: "{{ nomad_bin_dir }}/nomad"
+    state: absent
+
+- name: Create temporary build directory
+  ansible.builtin.tempfile:
+    state: directory
+    suffix: .nomad
+  register: tempfolder
+  changed_when: false
+
+- name: Download nomad checksum
+  get_url:
+    url: "{{ nomad_checksum_url }}"
+    dest: "{{ tempfolder.path }}/{{ nomad_checksum_name }}"
+
+- name: Extract checksum
+  shell: grep "{{ nomad_pkg_name }}" "{{ tempfolder.path }}/{{ nomad_checksum_name }}" | awk '{print $1}'
+  changed_when: false
+  register: checksum
+
+- name: Download nomad package
+  get_url:
+    url: "{{ nomad_pkg_url }}"
+    dest: "{{ tempfolder.path }}/{{ nomad_pkg_name }}"
+    checksum: "sha256:{{ checksum.stdout }}"
+
+- name: Check if bin dir exists
+  stat:
+    path: "{{ nomad_bin_dir }}"
+  register: nomad_bin_path_stat
+
+- name: Create bin dir if not exists
+  file:
+    path: "{{ nomad_bin_dir }}"
+    state: directory
+    owner: "{{ nomad_bin_user }}"
+    group: "{{ nomad_bin_group }}"
+    mode: 0755
+  when: not nomad_bin_path_stat.stat.exists
+
+- name: Extract to bin dir
+  become: true
+  ansible.builtin.unarchive:
+    remote_src: true
+    src: "{{ tempfolder.path }}/{{ nomad_pkg_name }}"
+    dest: "{{ nomad_bin_dir }}"
+    owner: "{{ nomad_bin_user }}"
+    group: "{{ nomad_bin_group }}"
+    mode: 0755
+  notify: restart nomad
+
+- name: Remove temporary build directory
+  file:
+    path: "{{ tempfolder.path }}"
+    state: absent
