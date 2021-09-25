@@ -1,8 +1,8 @@
 ---
 
-- name: Ensure encrypt key exists
+- name: Ensure encrypt-key and role exists
   assert:
-    that: consul_encrypt_key | length > 0
+    that: consul_encrypt_key | length > 0 and (consul_role == "server" or consul_role == "client")
 
 - name: Check if consul exists
   stat:
