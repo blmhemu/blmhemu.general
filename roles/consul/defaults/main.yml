@@ -11,6 +11,10 @@ consul_key_file: "{{ consul_config_dir }}/{{ consul_datacenter }}-{{ consul_role
 consul_enable_ui: true
 consul_bind_addr: "{{ '{{' }} GetInterfaceIP \\\"{{ ansible_default_ipv4.interface }}\\\" {{ '}}' }}"
 consul_client_addr: "0.0.0.0"
+# Disable http and enable https. You also change other ports similarly
+consul_ports:
+  http: -1
+  https: 8501
 
 # Advanced params
 consul_arch_map:

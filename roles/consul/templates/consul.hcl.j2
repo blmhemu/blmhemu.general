@@ -16,3 +16,10 @@ ui_config {
   enabled = {{ consul_enable_ui | lower }}
 }
 {% endif %}
+{% if consul_ports is defined and consul_ports | length %}
+ports {
+{% for item in consul_ports %}
+  {{ item }} = {{ consul_ports[item] }}
+{% endfor %}
+}
+{% endif %}
