@@ -1,0 +1,30 @@
+---
+
+- block:
+    - name: Copy TLS consul CA
+      ansible.builtin.copy:
+        src: "{{ consul_ca_src_file }}"
+        dest: "{{ consul_ca_file }}"
+        owner: "{{ consul_user }}"
+        group: "{{ consul_group }}"
+        mode: 0640
+      when: consul_ca_src_file is defined and consul_ca_src_file | length > 0
+
+    - name: Copy TLS consul cert
+      ansible.builtin.copy:
+        src: "{{ consul_cert_src_file }}"
+        dest: "{{ consul_cert_file }}"
+        owner: "{{ consul_user }}"
+        group: "{{ consul_group }}"
+        mode: 0640
+      when: consul_cert_src_file is defined and consul_cert_src_file | length > 0
+
+    - name: Copy TLS consul key
+      ansible.builtin.copy:
+        src: "{{ consul_key_src_file }}"
+        dest: "{{ consul_key_file }}"
+        owner: "{{ consul_user }}"
+        group: "{{ consul_group }}"
+        mode: 0640
+      when: consul_key_src_file is defined and consul_key_src_file | length > 0
+  become: true
