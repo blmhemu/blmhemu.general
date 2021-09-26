@@ -33,6 +33,15 @@
     dest: "{{ nomad_config_dir }}/client.hcl"
     owner: "{{ nomad_user }}"
     group: "{{ nomad_group }}"
+  when: nomad_role == 'client' or nomad_role == 'both'
+  notify: restart nomad
+
+- name: Ensure config client.hcl absent
+  become: true
+  file:
+    path: "{{ nomad_config_dir }}/client.hcl"
+    state: absent
+  when: nomad_role == 'server'
   notify: restart nomad
 
 - name: Ensure config server.hcl present
@@ -42,7 +51,7 @@
     dest: "{{ nomad_config_dir }}/server.hcl"
     owner: "{{ nomad_user }}"
     group: "{{ nomad_group }}"
-  when: nomad_role == 'server'
+  when: nomad_role == 'server' or nomad_role == 'both'
   notify: restart nomad
 
 - name: Ensure config server.hcl absent
@@ -50,7 +59,7 @@
   file:
     path: "{{ nomad_config_dir }}/server.hcl"
     state: absent
-  when: nomad_role != 'server'
+  when: nomad_role == 'client'
   notify: restart nomad
 
 - name: Ensure nomad service file present

@@ -3,3 +3,15 @@ server {
   bootstrap_expect = {{ nomad_bootstrap_expect | int }}
   encrypt = "{{ nomad_encrypt_key }}"
 }
+
+tls {
+  http = true
+  rpc  = true
+
+  ca_file = "{{ nomad_ca_file }}"
+  cert_file = "{{ nomad_cert_file }}"
+  key_file = "{{ nomad_key_file }}"
+
+  verify_server_hostname = true
+  verify_https_client    = true
+}
