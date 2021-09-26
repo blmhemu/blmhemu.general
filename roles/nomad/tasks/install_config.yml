@@ -16,6 +16,9 @@
         group: "{{ nomad_group }}"
         mode: 0700
 
+    - name: Copy TLS files
+      include_task: tls_copy.yml
+
     - name: Ensure nomad.hcl present
       template:
         src: nomad.hcl.j2

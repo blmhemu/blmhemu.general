@@ -4,8 +4,13 @@
 nomad_version: 1.1.5
 nomad_datacenter: dc1
 nomad_region: global
-nomad_encrypt_key: ""
 nomad_role: client
+nomad_encrypt_key: ""
+
+# TLS
+nomad_ca_src_file: ""
+nomad_cert_src_file: ""
+nomad_key_src_file: ""
 nomad_ca_file: "{{ nomad_config_dir }}/nomad-agent-ca.pem"
 nomad_cert_file: "{{ nomad_config_dir }}/{{ nomad_region }}-{{ 'server' if nomad_role != 'client' else 'client' }}-nomad-0.pem"
 nomad_key_file: "{{ nomad_config_dir }}/{{ nomad_region }}-{{ 'server' if nomad_role != 'client' else 'client' }}-nomad-0-key.pem"
