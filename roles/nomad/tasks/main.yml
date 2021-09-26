@@ -7,7 +7,7 @@
 
 - name: Ensure encrypt-key exists for servers
   assert:
-    that: nomad_encrypt_key | length > 0
+    that: nomad_encrypt_key | length > 0 or nomad_consul_enable
   when: nomad_role != "client"
 
 - name: Check if nomad exists
