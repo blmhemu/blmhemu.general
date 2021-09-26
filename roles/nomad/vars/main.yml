@@ -9,7 +9,7 @@ nomad_group: root
 nomad_servers: "\
   {% set _servers = [ ] %}\
   {% for host in play_hosts %}\
-    {% if hostvars[host]['nomad_role'] == 'server' %}\
+    {% if hostvars[host]['nomad_role'] == 'server' or hostvars[host]['nomad_role'] == 'both' %}\
       {% set _ = _servers.append(host) %}\
     {% endif %}\
   {% endfor %}\

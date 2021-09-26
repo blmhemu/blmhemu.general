@@ -1,73 +1,62 @@
 ---
 
-- name: Ensure data dirs exist
-  become: true
-  file:
-    path: "{{ nomad_data_dir }}"
-    state: directory
-    owner: "{{ nomad_user }}"
-    group: "{{ nomad_group }}"
+- block:
+    - name: Ensure data dirs exist
+      file:
+        path: "{{ nomad_data_dir }}"
+        state: directory
+        owner: "{{ nomad_user }}"
+        group: "{{ nomad_group }}"
 
-- name: Ensure config dirs exist
-  become: true
-  file:
-    path: "{{ nomad_config_dir }}"
-    state: directory
-    owner: "{{ nomad_user }}"
-    group: "{{ nomad_group }}"
-    mode: 0700
+    - name: Ensure config dirs exist
+      file:
+        path: "{{ nomad_config_dir }}"
+        state: directory
+        owner: "{{ nomad_user }}"
+        group: "{{ nomad_group }}"
+        mode: 0700
 
-- name: Ensure config nomad.hcl present
-  become: true
-  template:
-    src: nomad.hcl.j2
-    dest: "{{ nomad_config_dir }}/nomad.hcl"
-    owner: "{{ nomad_user }}"
-    group: "{{ nomad_group }}"
-  notify: restart nomad
+    - name: Ensure nomad.hcl present
+      template:
+        src: nomad.hcl.j2
+        dest: "{{ nomad_config_dir }}/nomad.hcl"
+        owner: "{{ nomad_user }}"
+        group: "{{ nomad_group }}"
 
-- name: Ensure config client.hcl present
-  become: true
-  template:
-    src: client.hcl.j2
-    dest: "{{ nomad_config_dir }}/client.hcl"
-    owner: "{{ nomad_user }}"
-    group: "{{ nomad_group }}"
-  when: nomad_role == 'client' or nomad_role == 'both'
-  notify: restart nomad
+    - name: Ensure client.hcl present
+      template:
+        src: client.hcl.j2
+        dest: "{{ nomad_config_dir }}/client.hcl"
+        owner: "{{ nomad_user }}"
+        group: "{{ nomad_group }}"
+      when: nomad_role != 'server'
 
-- name: Ensure config client.hcl absent
-  become: true
-  file:
-    path: "{{ nomad_config_dir }}/client.hcl"
-    state: absent
-  when: nomad_role == 'server'
-  notify: restart nomad
+    - name: Ensure client.hcl absent
+      file:
+        path: "{{ nomad_config_dir }}/client.hcl"
+        state: absent
+      when: nomad_role == 'server'
 
-- name: Ensure config server.hcl present
-  become: true
-  template:
-    src: server.hcl.j2
-    dest: "{{ nomad_config_dir }}/server.hcl"
-    owner: "{{ nomad_user }}"
-    group: "{{ nomad_group }}"
-  when: nomad_role == 'server' or nomad_role == 'both'
-  notify: restart nomad
+    - name: Ensure server.hcl present
+      template:
+        src: server.hcl.j2
+        dest: "{{ nomad_config_dir }}/server.hcl"
+        owner: "{{ nomad_user }}"
+        group: "{{ nomad_group }}"
+      when: nomad_role != 'client'
 
-- name: Ensure config server.hcl absent
-  become: true
-  file:
-    path: "{{ nomad_config_dir }}/server.hcl"
-    state: absent
-  when: nomad_role == 'client'
-  notify: restart nomad
+    - name: Ensure server.hcl absent
+      file:
+        path: "{{ nomad_config_dir }}/server.hcl"
+        state: absent
+      when: nomad_role == 'client'
 
-- name: Ensure nomad service file present
+    - name: Ensure nomad.service present
+      template:
+        src: nomad.service.j2
+        dest: "{{ nomad_systemd_dir }}/nomad.service"
+        owner: root
+        group: root
+        mode: 0644
   become: true
-  template:
-    src: nomad.service.j2
-    dest: "{{ nomad_systemd_dir }}/nomad.service"
-    owner: root
-    group: root
-    mode: 0644
   notify: restart nomad

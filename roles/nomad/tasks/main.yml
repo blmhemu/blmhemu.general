@@ -3,12 +3,12 @@
 - name: Ensure role exists
   assert:
     that:
-      - nomad_role == "server" or nomad_role == "client" # TODO: or nomad_role == "both"
+      - nomad_role in ["server", "client", "both"]
 
 - name: Ensure encrypt-key exists for servers
   assert:
     that: nomad_encrypt_key | length > 0
-  when: nomad_role == "server" or nomad_role == "both"
+  when: nomad_role != "client"
 
 - name: Check if nomad exists
   stat:

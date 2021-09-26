@@ -1,2 +1,33 @@
 datacenter = "{{ nomad_datacenter }}"
+region = "{{ nomad_region }}"
 data_dir = "{{ nomad_data_dir }}"
+
+bind_addr = "{{ nomad_bind_addr }}"
+
+addresses {
+  http = "{{ nomad_http_addr }}"
+  rpc = "{{ nomad_rpc_addr }}"
+  serf = "{{ nomad_serf_addr }}"
+}
+
+tls {
+  http = true
+  rpc  = true
+
+  ca_file = "{{ nomad_ca_file }}"
+  cert_file = "{{ nomad_cert_file }}"
+  key_file = "{{ nomad_key_file }}"
+
+  verify_server_hostname = true
+  verify_https_client    = true
+}
+
+{% if nomad_consul_enable %}
+consul {
+  address = "{{ nomad_consul_address }}"
+  ssl = {{ nomad_consul_ssl | lower }}
+  ca_file = "{{ nomad_consul_ca_file }}"
+  cert_file = "{{ nomad_consul_cert_file }}"
+  key_file = "{{ nomad_consul_key_file }}"
+}
+{% endif %}

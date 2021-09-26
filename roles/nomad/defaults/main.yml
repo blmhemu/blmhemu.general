@@ -3,18 +3,24 @@
 # Configurable params
 nomad_version: 1.1.5
 nomad_datacenter: dc1
+nomad_region: global
 nomad_encrypt_key: ""
-nomad_role: "client"
+nomad_role: client
 nomad_ca_file: "{{ nomad_config_dir }}/nomad-agent-ca.pem"
-nomad_cert_file: "{{ nomad_config_dir }}/{{ nomad_datacenter }}-{{ nomad_role }}-nomad-0.pem"
-nomad_key_file: "{{ nomad_config_dir }}/{{ nomad_datacenter }}-{{ nomad_role }}-nomad-0-key.pem"
-consul_enable_ui: true
-consul_bind_addr: "{{ '{{' }} GetInterfaceIP \\\"{{ ansible_default_ipv4.interface }}\\\" {{ '}}' }}"
-consul_client_addr: "0.0.0.0"
-# Disable http and enable https. You also change other ports similarly
-consul_ports:
-  http: -1
-  https: 8501
+nomad_cert_file: "{{ nomad_config_dir }}/{{ nomad_region }}-{{ 'server' if nomad_role != 'client' else 'client' }}-nomad-0.pem"
+nomad_key_file: "{{ nomad_config_dir }}/{{ nomad_region }}-{{ 'server' if nomad_role != 'client' else 'client' }}-nomad-0-key.pem"
+
+nomad_consul_enable: true
+nomad_consul_address: "127.0.0.1:8501"
+nomad_consul_ssl: true
+nomad_consul_ca_file: "{{ nomad_config_dir }}/consul-agent-ca.pem"
+nomad_consul_cert_file: "{{ nomad_config_dir }}/{{ nomad_datacenter }}-cli-consul-0.pem"
+nomad_consul_key_file: "{{ nomad_config_dir }}/{{ nomad_datacenter }}-cli-consul-0-key.pem"
+
+nomad_bind_addr: "{{ '{{' }} GetInterfaceIP \\\"{{ ansible_default_ipv4.interface }}\\\" {{ '}}' }}"
+nomad_http_addr: "{{ nomad_bind_addr }}"
+nomad_rpc_addr: "{{ nomad_bind_addr }}"
+nomad_serf_addr: "{{ nomad_bind_addr }}"
 
 # Advanced params
 nomad_arch_map:
