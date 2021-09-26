@@ -1,0 +1,7 @@
+server {
+  enabled = true
+  bootstrap_expect = {{ nomad_bootstrap_expect | int }}
+{% if not nomad_consul_enable %}
+  encrypt = "{{ nomad_encrypt_key }}"
+{% endif %}
+}

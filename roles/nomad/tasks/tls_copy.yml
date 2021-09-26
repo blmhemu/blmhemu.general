@@ -1,0 +1,58 @@
+---
+
+- block:
+    - name: Copy TLS nomad CA
+      ansible.builtin.copy:
+        src: "{{ nomad_ca_src_file }}"
+        dest: "{{ nomad_ca_file }}"
+        owner: "{{ nomad_user }}"
+        group: "{{ nomad_group }}"
+        mode: 0640
+      when: nomad_ca_src_file is defined and nomad_ca_src_file | length > 0
+
+    - name: Copy TLS nomad cert
+      ansible.builtin.copy:
+        src: "{{ nomad_cert_src_file }}"
+        dest: "{{ nomad_cert_file }}"
+        owner: "{{ nomad_user }}"
+        group: "{{ nomad_group }}"
+        mode: 0640
+      when: nomad_cert_src_file is defined and nomad_cert_src_file | length > 0
+
+    - name: Copy TLS nomad key
+      ansible.builtin.copy:
+        src: "{{ nomad_key_src_file }}"
+        dest: "{{ nomad_key_file }}"
+        owner: "{{ nomad_user }}"
+        group: "{{ nomad_group }}"
+        mode: 0640
+      when: nomad_key_src_file is defined and nomad_key_src_file | length > 0
+
+    # Below lines copy certs for accessing consul
+    - name: Copy consul ca cert
+      ansible.builtin.copy:
+        src: "{{ nomad_consul_ca_src_file }}"
+        dest: "{{ nomad_consul_ca_file }}"
+        owner: "{{ nomad_user }}"
+        group: "{{ nomad_group }}"
+        mode: 0640
+      when: nomad_consul_ca_src_file is defined and nomad_consul_ca_src_file | length > 0
+
+    - name: Copy consul cli cert
+      ansible.builtin.copy:
+        src: "{{ nomad_consul_cert_src_file }}"
+        dest: "{{ nomad_consul_cert_file }}"
+        owner: "{{ nomad_user }}"
+        group: "{{ nomad_group }}"
+        mode: 0640
+      when: nomad_consul_cert_src_file is defined and nomad_consul_cert_src_file | length > 0
+
+    - name: Copy consul cli key
+      ansible.builtin.copy:
+        src: "{{ nomad_consul_key_src_file }}"
+        dest: "{{ nomad_consul_key_file }}"
+        owner: "{{ nomad_user }}"
+        group: "{{ nomad_group }}"
+        mode: 0640
+      when: nomad_consul_key_src_file is defined and nomad_consul_key_src_file | length > 0
+  become: true

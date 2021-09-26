@@ -1,0 +1,54 @@
+---
+
+# Configurable params
+nomad_version: 1.1.5
+nomad_datacenter: dc1
+nomad_region: global
+nomad_role: client
+nomad_encrypt_key: ""
+
+## Locations of tls files on source (controller).
+## These will be copied to remote at nomad_*_src_file and placed at nomad_*_file
+nomad_ca_src_file: ""
+nomad_cert_src_file: ""
+nomad_key_src_file: ""
+nomad_ca_file: "{{ nomad_config_dir }}/nomad-agent-ca.pem"
+nomad_cert_file: "{{ nomad_config_dir }}/{{ nomad_region }}-{{ 'server' if nomad_role != 'client' else 'client' }}-nomad-0.pem"
+nomad_key_file: "{{ nomad_config_dir }}/{{ nomad_region }}-{{ 'server' if nomad_role != 'client' else 'client' }}-nomad-0-key.pem"
+
+## Consul auto-bootstrap and service discovery. Locations of tls files on source (controller)
+nomad_consul_enable: true
+nomad_consul_address: "127.0.0.1:8501"
+nomad_consul_ssl: true
+## These will be copied to remote at nomad_consul_*_src_file and placed at nomad_consul_*_file
+nomad_consul_ca_src_file: ""
+nomad_consul_cert_src_file: ""
+nomad_consul_key_src_file: ""
+nomad_consul_ca_file: "{{ nomad_config_dir }}/consul-agent-ca.pem"
+nomad_consul_cert_file: "{{ nomad_config_dir }}/{{ nomad_datacenter }}-cli-consul-0.pem"
+nomad_consul_key_file: "{{ nomad_config_dir }}/{{ nomad_datacenter }}-cli-consul-0-key.pem"
+
+## Bind addresses - control which interfaces nomad listenes to.
+nomad_bind_addr: "{{ '{{' }} GetInterfaceIP \\\"{{ ansible_default_ipv4.interface }}\\\" {{ '}}' }}"
+nomad_http_addr: "{{ nomad_bind_addr }}"
+nomad_rpc_addr: "{{ nomad_bind_addr }}"
+nomad_serf_addr: "{{ nomad_bind_addr }}"
+
+# Advanced params
+nomad_arch_map:
+  amd64: amd64
+  x86_64: amd64
+  armv7l: arm
+  aarch64: arm64
+  32-bit: "386"
+  64-bit: amd64
+
+nomad_config_dir: /etc/nomad.d
+nomad_data_dir: /opt/nomad
+nomad_systemd_dir: /etc/systemd/system
+
+nomad_pkg_name: nomad_{{ nomad_version }}_linux_{{ nomad_arch_map[ansible_architecture] }}.zip
+nomad_checksum_name: nomad_{{ nomad_version }}_SHA256SUMS
+nomad_base_url: https://releases.hashicorp.com/nomad/{{ nomad_version }}
+nomad_pkg_url: "{{ nomad_base_url }}/{{ nomad_pkg_name }}"
+nomad_checksum_url: "{{ nomad_base_url }}/{{ nomad_checksum_name }}"

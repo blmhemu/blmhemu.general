@@ -1,0 +1,65 @@
+---
+
+- block:
+    - name: Ensure data dirs exist
+      file:
+        path: "{{ nomad_data_dir }}"
+        state: directory
+        owner: "{{ nomad_user }}"
+        group: "{{ nomad_group }}"
+
+    - name: Ensure config dirs exist
+      file:
+        path: "{{ nomad_config_dir }}"
+        state: directory
+        owner: "{{ nomad_user }}"
+        group: "{{ nomad_group }}"
+        mode: 0700
+
+    - name: Copy TLS files
+      include: tls_copy.yml
+
+    - name: Ensure nomad.hcl present
+      template:
+        src: nomad.hcl.j2
+        dest: "{{ nomad_config_dir }}/nomad.hcl"
+        owner: "{{ nomad_user }}"
+        group: "{{ nomad_group }}"
+
+    - name: Ensure client.hcl present
+      template:
+        src: client.hcl.j2
+        dest: "{{ nomad_config_dir }}/client.hcl"
+        owner: "{{ nomad_user }}"
+        group: "{{ nomad_group }}"
+      when: nomad_role != 'server'
+
+    - name: Ensure client.hcl absent
+      file:
+        path: "{{ nomad_config_dir }}/client.hcl"
+        state: absent
+      when: nomad_role == 'server'
+
+    - name: Ensure server.hcl present
+      template:
+        src: server.hcl.j2
+        dest: "{{ nomad_config_dir }}/server.hcl"
+        owner: "{{ nomad_user }}"
+        group: "{{ nomad_group }}"
+      when: nomad_role != 'client'
+
+    - name: Ensure server.hcl absent
+      file:
+        path: "{{ nomad_config_dir }}/server.hcl"
+        state: absent
+      when: nomad_role == 'client'
+
+    - name: Ensure nomad.service present
+      template:
+        src: nomad.service.j2
+        dest: "{{ nomad_systemd_dir }}/nomad.service"
+        owner: root
+        group: root
+        mode: 0644
+  become: true
+  notify: restart nomad
