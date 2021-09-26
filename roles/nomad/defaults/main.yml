@@ -7,7 +7,8 @@ nomad_region: global
 nomad_role: client
 nomad_encrypt_key: ""
 
-# TLS
+## Locations of tls files on source (controller).
+## These will be copied to remote at nomad_*_src_file and placed at nomad_*_file
 nomad_ca_src_file: ""
 nomad_cert_src_file: ""
 nomad_key_src_file: ""
@@ -15,13 +16,19 @@ nomad_ca_file: "{{ nomad_config_dir }}/nomad-agent-ca.pem"
 nomad_cert_file: "{{ nomad_config_dir }}/{{ nomad_region }}-{{ 'server' if nomad_role != 'client' else 'client' }}-nomad-0.pem"
 nomad_key_file: "{{ nomad_config_dir }}/{{ nomad_region }}-{{ 'server' if nomad_role != 'client' else 'client' }}-nomad-0-key.pem"
 
+## Consul auto-bootstrap and service discovery. Locations of tls files on source (controller)
 nomad_consul_enable: true
 nomad_consul_address: "127.0.0.1:8501"
 nomad_consul_ssl: true
+## These will be copied to remote at nomad_consul_*_src_file and placed at nomad_consul_*_file
+nomad_consul_ca_src_file: ""
+nomad_consul_cert_src_file: ""
+nomad_consul_key_src_file: ""
 nomad_consul_ca_file: "{{ nomad_config_dir }}/consul-agent-ca.pem"
 nomad_consul_cert_file: "{{ nomad_config_dir }}/{{ nomad_datacenter }}-cli-consul-0.pem"
 nomad_consul_key_file: "{{ nomad_config_dir }}/{{ nomad_datacenter }}-cli-consul-0-key.pem"
 
+## Bind addresses - control which interfaces nomad listenes to.
 nomad_bind_addr: "{{ '{{' }} GetInterfaceIP \\\"{{ ansible_default_ipv4.interface }}\\\" {{ '}}' }}"
 nomad_http_addr: "{{ nomad_bind_addr }}"
 nomad_rpc_addr: "{{ nomad_bind_addr }}"
@@ -39,8 +46,6 @@ nomad_arch_map:
 nomad_config_dir: /etc/nomad.d
 nomad_data_dir: /opt/nomad
 nomad_systemd_dir: /etc/systemd/system
-
-consul_advertise_addr: "{{ consul_bind_addr }}"
 
 nomad_pkg_name: nomad_{{ nomad_version }}_linux_{{ nomad_arch_map[ansible_architecture] }}.zip
 nomad_checksum_name: nomad_{{ nomad_version }}_SHA256SUMS

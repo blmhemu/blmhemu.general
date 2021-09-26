@@ -36,6 +36,7 @@
         owner: "{{ nomad_user }}"
         group: "{{ nomad_group }}"
         mode: 0640
+      when: nomad_consul_ca_src_file is defined and nomad_consul_ca_src_file | length > 0
 
     - name: Copy consul cli cert
       ansible.builtin.copy:
@@ -44,6 +45,7 @@
         owner: "{{ nomad_user }}"
         group: "{{ nomad_group }}"
         mode: 0640
+      when: nomad_consul_cert_src_file is defined and nomad_consul_cert_src_file | length > 0
 
     - name: Copy consul cli key
       ansible.builtin.copy:
@@ -52,4 +54,5 @@
         owner: "{{ nomad_user }}"
         group: "{{ nomad_group }}"
         mode: 0640
+      when: nomad_consul_key_src_file is defined and nomad_consul_key_src_file | length > 0
   become: true
