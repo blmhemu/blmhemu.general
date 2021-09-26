@@ -17,7 +17,7 @@
         mode: 0700
 
     - name: Copy TLS files
-      include: tls_copy.yml
+      include_tasks: tls_copy.yml
 
     - name: Ensure nomad.hcl present
       template:

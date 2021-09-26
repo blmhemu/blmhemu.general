@@ -16,7 +16,7 @@
   register: nomad_bin_file
 
 - name: Check current version
-  command: "{{ nomad_bin_dir }}/nomad version -format=json"
+  command: "{{ nomad_bin_dir }}/nomad version"
   changed_when: false
   register: nomad_existing_version
   when: nomad_bin_file.stat.exists
