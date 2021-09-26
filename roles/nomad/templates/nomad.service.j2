@@ -4,10 +4,10 @@ Documentation=https://www.nomadproject.io/docs/
 Wants=network-online.target
 After=network-online.target
 
+{% if nomad_consul_enable %}
 # When using Nomad with Consul it is not necessary to start Consul first. These
 # lines start Consul before Nomad as an optimization to avoid Nomad logging
 # that Consul is unavailable at startup.
-{% if nomad_consul_enable %}
 Wants=consul.service
 After=consul.service
 {% endif %}
