@@ -19,6 +19,15 @@
     - name: Copy TLS files
       include_tasks: tls_copy.yml
 
+    - name: Ensure required host vols exist
+      file:
+        path: "{{ item.path }}"
+        owner: "{{ item.owner | default(nomad_user) }}"
+        group: "{{ item.group | default(nomad_group) }}"
+        mode: "{{ item.mode | default('0755') }}"
+        state: directory
+      with_items: "{{ nomad_host_volumes }}"
+
     - name: Ensure nomad.hcl present
       template:
         src: nomad.hcl.j2

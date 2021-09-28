@@ -34,15 +34,24 @@ nomad_http_addr: "{{ nomad_bind_addr }}"
 nomad_rpc_addr: "{{ nomad_bind_addr }}"
 nomad_serf_addr: "{{ nomad_bind_addr }}"
 
-# Host volumes host networks
+# Host volumes
+# Warning:
+# Although the role creates the directories, it is the
+# users responsibility to ensure volumes are in sync (e.x: NFS) on all the hosts.
+# Otherwise jobs may not run as required.
 nomad_host_volumes: []
-# Example config
+#Example config
 #nomad_host_volumes:
 #  - name: my_vol
 #    path: /some/path/on/client
-#    read_only: true or false
+#    read_only: true # or false
+#    owner: root # (defaults to nomad_user)
+#    group: root # (defaults to nomad_group)
+#    mode: 0700 # (defaults to 0755)
+
+# Host networks
 nomad_host_networks: []
-# Example config
+#Example config
 #nomad_host_networks:
 #  - name: my_net
 #    cidr_or_interface: 10.10.10.0/24 or eth0
