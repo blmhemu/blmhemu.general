@@ -8,11 +8,11 @@ client {
 {% endfor %}
 {% for net in nomad_host_networks %}
   host_network "{{ net.name }}" {
-    {% if net.cidr_or_interface | ipaddr %}
+  {% if net.cidr_or_interface | ipaddr %}
     cidr = "{{ net.cidr_or_interface | ipaddr }}"
-    {% else %}
+  {% else %}
     interface = "{{ net.cidr_or_interface }}"
-    {% endif %}
+  {% endif %}
     reserved_ports = "{{ net.reserved_ports | join(',') }}"
   }
 {% endfor %}
