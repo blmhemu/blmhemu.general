@@ -47,7 +47,7 @@ nomad_host_volumes: []
 #    read_only: true # or false
 #    owner: root # (defaults to nomad_user)
 #    group: root # (defaults to nomad_group)
-#    mode: 0700 # (defaults to 0755)
+#    mode: "0700" # (defaults to 0755) # Always use a string
 
 # Host networks
 nomad_host_networks: []
