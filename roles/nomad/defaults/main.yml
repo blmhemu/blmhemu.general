@@ -27,6 +27,7 @@ nomad_consul_key_src_file: ""
 nomad_consul_ca_file: "{{ nomad_config_dir }}/consul-agent-ca.pem"
 nomad_consul_cert_file: "{{ nomad_config_dir }}/{{ nomad_datacenter }}-cli-consul-0.pem"
 nomad_consul_key_file: "{{ nomad_config_dir }}/{{ nomad_datacenter }}-cli-consul-0-key.pem"
+nomad_consul_tags: []
 
 ## Bind addresses - control which interfaces nomad listenes to.
 nomad_bind_addr: "{{ '{{' }} GetInterfaceIP \\\"{{ ansible_default_ipv4.interface }}\\\" {{ '}}' }}"
