@@ -1,3 +1,19 @@
 client {
   enabled = true
+{% for vol in nomad_host_volumes %}
+  host_volume "{{ vol.name }}" {
+    path = "{{ vol.path }}"
+    read_only = {{ vol.read_only | lower }}
+  }
+{% endfor %}
+{% for net in nomad_host_networks %}
+  host_network "{{ net.name }}" {
+    {% if net.cidr_or_interface | ipaddr %}
+    cidr = "{{ net.cidr_or_interface | ipaddr }}"
+    {% else %}
+    interface = "{{ net.cidr_or_interface }}"
+    {% endif %}
+    reserved_ports = "{{ net.reserved_ports | join(',') }}"
+  }
+{% endfor %}
 }

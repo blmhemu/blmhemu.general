@@ -34,6 +34,20 @@ nomad_http_addr: "{{ nomad_bind_addr }}"
 nomad_rpc_addr: "{{ nomad_bind_addr }}"
 nomad_serf_addr: "{{ nomad_bind_addr }}"
 
+# Host volumes host networks
+nomad_host_volumes: []
+# Example config
+#nomad_host_volumes:
+#  - name: my_vol
+#    path: /some/path/on/client
+#    read_only: true or false
+nomad_host_networks: []
+# Example config
+#nomad_host_networks:
+#  - name: my_net
+#    cidr_or_interface: 10.10.10.0/24 or eth0
+#    reserved_ports: [20, 80]
+
 # Advanced params
 nomad_arch_map:
   amd64: amd64
