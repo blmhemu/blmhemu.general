@@ -37,8 +37,8 @@ nomad_serf_addr: "{{ nomad_bind_addr }}"
 
 # Host volumes
 # Warning:
-# Although the role creates the directories, it is the
-# users responsibility to ensure volumes are in sync (e.x: NFS) on all the hosts.
+# The users must create the required directories and are responsible
+# to ensure volumes are in sync (e.x: NFS) on all the hosts.
 # Otherwise jobs may not run as required.
 nomad_host_volumes: []
 #Example config
