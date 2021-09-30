@@ -35,8 +35,8 @@
 
 - name: Copy resolv.conf
   become: true
-  copy:
-    src: resolv.conf
+  template:
+    src: resolv.conf.j2
     dest: /etc/resolv.conf
     owner: root
     group: root
@@ -47,7 +47,7 @@
 - name: Add dnsmasq config
   become: true
   template:
-    src: dnsmasq.j2
+    src: dnsmasq.conf.j2
     dest: /etc/dnsmasq.d/default.conf
     owner: root
     group: root

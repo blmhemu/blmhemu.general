@@ -8,3 +8,7 @@ dnsmasq_config: |
   server=8.8.8.8
   interface=lo
   bind-dynamic
+
+resolv_config: |
+  nameserver 127.0.0.1
+  options trust-ad
