@@ -41,7 +41,7 @@
     owner: root
     group: root
     mode: 0644
-    attr: +i
+#     attr: +i # Can be made immutable using this
   notify: restart dnsmasq
 
 - name: Add dnsmasq config
