@@ -1,0 +1,81 @@
+---
+
+- name: Install dnsmasq
+  become: true
+  package:
+    name: dnsmasq
+    state: present
+
+- name: Gather service facts
+  service_facts:
+
+- block:
+    - name: Set 'dns=none' in NetworkManager.conf
+      ini_file:
+        path: /etc/NetworkManager/NetworkManager.conf
+        state: present
+        no_extra_spaces: true
+        section: main
+        option: dns
+        value: none
+        owner: root
+        group: root
+        mode: 0644
+      register: NetworkManager_changed
+
+    - name: Restart NetworkManager
+      service:
+        name: NetworkManager
+        state: restarted
+      when: NetworkManager_changed.changed
+  become: true
+  when:
+    - ansible_facts.services['NetworkManager.service'] is defined
+    - ansible_facts.services['NetworkManager.service'].status == "enabled"
+
+- name: Copy resolv.conf
+  become: true
+  copy:
+    src: resolv.conf
+    dest: /etc/resolv.conf
+    owner: root
+    group: root
+    mode: 0644
+    attr: +i
+  notify: restart dnsmasq
+
+- name: Add dnsmasq config
+  become: true
+  template:
+    src: dnsmasq.j2
+    dest: /etc/dnsmasq.d/default.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart dnsmasq
+
+- name: Stop and disable systemd-resolved
+  become: true
+  ansible.builtin.service:
+    name: systemd-resolved
+    state: stopped
+    enabled: false
+    daemon_reload: true
+
+- name: Enable dnsmasq service
+  become: true
+  ansible.builtin.service:
+    name: dnsmasq
+    enabled: true
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Ensure dnsmasq service is started
+  become: true
+  ansible.builtin.service:
+    name: dnsmasq
+    state: started
+
+- name: Wait 600 seconds for target connection to become reachable/usable
+  wait_for_connection:

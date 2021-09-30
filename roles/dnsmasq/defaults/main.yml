@@ -1,0 +1,10 @@
+---
+
+dnsmasq_config: |
+  no-resolv
+  # For consul
+  # For remaining
+  server=1.1.1.1
+  server=8.8.8.8
+  interface=lo
+  bind-dynamic
