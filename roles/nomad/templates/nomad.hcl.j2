@@ -32,3 +32,13 @@ consul {
   tags = {{ nomad_consul_tags }}
 }
 {% endif %}
+
+{% if nomad_telemetry_enable %}
+telemetry {
+  collection_interval = "{{ nomad_telemetry_collection_interval }}"
+  disable_hostname = {{ nomad_telemetry_disable_hostname }}
+  prometheus_metrics = {{ nomad_telemetry_prometheus_metrics }}
+  publish_allocation_metrics = {{ nomad_telemetry_publish_allocation_metrics }}
+  publish_node_metrics = {{ nomad_telemetry_publish_node_metrics }}
+}
+{% endif %}

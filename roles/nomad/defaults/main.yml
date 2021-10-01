@@ -57,6 +57,13 @@ nomad_host_networks: []
 #  - name: my_net
 #    cidr_or_interface: 10.10.10.0/24 or eth0
 #    reserved_ports: [20, 80]
+nomad_telemetry_enable: false
+nomad_telemetry_collection_interval: 1s
+nomad_telemetry_disable_hostname: true
+nomad_telemetry_prometheus_metrics: true
+nomad_telemetry_publish_allocation_metrics: true
+nomad_telemetry_publish_node_metrics: true
+
 
 # Advanced params
 nomad_arch_map:
