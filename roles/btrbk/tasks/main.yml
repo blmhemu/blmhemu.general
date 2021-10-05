@@ -1,0 +1,14 @@
+---
+
+- name: Install dependencies
+  package:
+    name: "{{ btrbk_deps }}"
+    state: present
+
+- name: Install btrbk
+  get_url:
+    url: https://raw.githubusercontent.com/digint/btrbk/master/btrbk
+    dest: /usr/local/bin/btrbk
+    owner: root
+    group: root
+    mode: 0755

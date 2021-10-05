@@ -1,0 +1,11 @@
+---
+
+# Configurable params
+cni_version: 1.0.1
+
+# Advanced params
+btrbk_deps:
+  - btrfs-progs
+  - perl
+  - openssh-client
+  - mbuffer
