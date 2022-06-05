@@ -10,6 +10,12 @@ addresses {
   serf = "{{ nomad_serf_addr }}"
 }
 
+advertise {
+  http = "{{ nomad_http_adv_addr }}"
+  rpc = "{{ nomad_rpc_adv_addr }}"
+  serf = "{{ nomad_serf_adv_addr }}"
+}
+
 tls {
   http = true
   rpc  = true
