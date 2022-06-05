@@ -1,7 +1,7 @@
 ---
 
 # Configurable params
-cni_version: 1.0.1
+cni_version: 1.1.1
 
 # Advanced params
 cni_arch_map:
@@ -19,4 +19,3 @@ cni_pkg_name: cni-plugins-linux-{{ cni_arch_map[ansible_architecture] }}-{{ cni_
 cni_checksum_name: "{{ cni_pkg_name }}.sha256"
 cni_pkg_url: https://github.com/containernetworking/plugins/releases/download/{{ cni_version_v }}/{{ cni_pkg_name }}
 cni_checksum_url: https://github.com/containernetworking/plugins/releases/download/{{ cni_version_v }}/{{ cni_checksum_name }}
-

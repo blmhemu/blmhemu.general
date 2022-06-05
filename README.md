@@ -1,3 +1,9 @@
 # Ansible Collection - blmhemu.general
 
-Documentation for the collection.
+## Roles
+* bootparams: Enables cgroups.
+* bootstrap: Setup ntp, apt, etc.
+* cni: Installs sni plugins.
+* consul: Sets up consul.
+* dnsmasq: Sets up dnsmasq (to use consul dns).
+* nomad: Sets up nomad.
