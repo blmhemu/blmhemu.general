@@ -33,9 +33,10 @@
 
 - name: Enable nomad service
   become: true
-  ansible.builtin.service:
+  ansible.builtin.systemd:
     name: nomad
     enabled: true
+    daemon_reload: true
 
 - name: Flush handlers
   meta: flush_handlers

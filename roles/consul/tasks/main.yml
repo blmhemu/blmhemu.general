@@ -27,9 +27,10 @@
 
 - name: Enable consul service
   become: true
-  ansible.builtin.service:
+  ansible.builtin.systemd:
     name: consul
     enabled: true
+    daemon_reload: true
 
 - name: Flush handlers
   meta: flush_handlers
