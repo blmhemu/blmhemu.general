@@ -18,21 +18,21 @@
 
 - block:
     - name: Params present | Armbian
-      include: armbian_present.yml
+      include_tasks: armbian_present.yml
       loop: "{{ boot_params_present }}"
 
     - name: Params absent | Armbian
-      include: armbian_absent.yml
+      include_tasks: armbian_absent.yml
       loop: "{{ boot_params_absent }}"
   when: armbian_boot.stat.exists
 
 - block:
     - name: Params present | RPi
-      include: rpi_present.yml
+      include_tasks: rpi_present.yml
       loop: "{{ boot_params_present }}"
 
     - name: Params absent | RPi
-      include: rpi_absent.yml
+      include_tasks: rpi_absent.yml
       loop: "{{ boot_params_absent }}"
   when: rpi_boot.stat.exists
 
@@ -40,14 +40,14 @@
   meta: flush_handlers
 
 - name: Verify if params present
-  include: verify_present.yml
+  include_tasks: verify_present.yml
   loop: "{{ boot_params_present }}"
   when:
     - boot_params_present | length > 0
     - verify_present | bool
 
 - name: Verify if params absent
-  include: verify_absent.yml
+  include_tasks: verify_absent.yml
   loop: "{{ boot_params_absent }}"
   when:
     - boot_params_absent | length > 0

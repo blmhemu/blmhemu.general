@@ -1,8 +1,8 @@
 ---
 
 - name: Setup common tasks
-  include: common.yml
+  include_tasks: common.yml
 
 - name: Setup distro specific tasks | Debian (Ubuntu)
-  include: debian.yml
+  include_tasks: debian.yml
   when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
