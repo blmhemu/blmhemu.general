@@ -15,7 +15,7 @@ consul_servers: "\
 consul_retry_join: "\
   {% set _consul_join = [ ] %}\
   {% for server in consul_servers %}\
-    {% set _ = _consul_join.append(hostvars[server]['consul_advertise_addr'] | default(hostvars[server]['consul_bind_addr']) | default(hostvars[server]['ansible_default_ipv4']['address']) | mandatory) %}\
+    {% set _ = _consul_join.append(hostvars[server][consul_retry_join_interface]['address'] | default(hostvars[server][consul_retry_join_interface]['ipv4']['address']) | mandatory) %}\
   {% endfor %}\
   {{ _consul_join }}"
 consul_bootstrap_expect: "{{ consul_servers | length }}"
