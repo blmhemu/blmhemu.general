@@ -13,7 +13,6 @@
 
 - name: Install vault binary
   include_tasks: install_vault.yml
-  notify: restart vault
   when: not vault_bin_file.stat.exists or vault_version not in vault_existing_version.stdout
 
 - name: Ensure users and groups exists

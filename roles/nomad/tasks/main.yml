@@ -23,7 +23,6 @@
 
 - name: Install nomad binary
   include_tasks: install_nomad.yml
-  notify: restart nomad
   when: not nomad_bin_file.stat.exists or nomad_version not in nomad_existing_version.stdout
 
 - name: Ensure users and groups exists
