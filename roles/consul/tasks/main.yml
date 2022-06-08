@@ -17,6 +17,7 @@
 
 - name: Install consul binary
   include_tasks: install_consul.yml
+  notify: restat consul
   when: not consul_bin_file.stat.exists or consul_version != (consul_existing_version.stdout | from_json).Version
 
 - name: Ensure users and groups exists
