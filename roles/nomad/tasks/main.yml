@@ -12,11 +12,11 @@
 
 - name: Check if nomad exists
   stat:
-    path: "{{ nomad_bin_dir }}/nomad"
+    path: "{{ nomad_bin_path }}/nomad"
   register: nomad_bin_file
 
 - name: Check current version
-  command: "{{ nomad_bin_dir }}/nomad version"
+  command: "{{ nomad_bin_path }}/nomad version"
   changed_when: false
   register: nomad_existing_version
   when: nomad_bin_file.stat.exists

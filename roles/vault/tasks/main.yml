@@ -6,7 +6,7 @@
   register: vault_bin_file
 
 - name: Check current version
-  command: "{{ vault_bin_dir }}/vault version"
+  command: "{{ vault_bin_path }}/vault version"
   changed_when: false
   register: vault_existing_version
   when: vault_bin_file.stat.exists

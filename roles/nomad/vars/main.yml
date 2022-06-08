@@ -1,6 +1,6 @@
 ---
 
-nomad_bin_dir: /usr/local/bin
+nomad_bin_path: /usr/local/bin
 nomad_bin_user: root
 nomad_bin_group: root
 nomad_user: root

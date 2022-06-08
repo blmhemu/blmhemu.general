@@ -14,7 +14,7 @@ After=consul.service
 
 [Service]
 ExecReload=/bin/kill -HUP $MAINPID
-ExecStart={{ nomad_bin_dir }}/nomad agent -config {{ nomad_config_dir }}
+ExecStart={{ nomad_bin_path }}/nomad agent -config {{ nomad_config_dir }}
 KillMode=process
 KillSignal=SIGINT
 LimitNOFILE=65536

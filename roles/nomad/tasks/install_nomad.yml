@@ -3,7 +3,7 @@
 - name: Remove existing version
   become: true
   file:
-    path: "{{ nomad_bin_dir }}/nomad"
+    path: "{{ nomad_bin_path }}/nomad"
     state: absent
 
 - name: Create temporary build directory
@@ -31,12 +31,12 @@
 
 - name: Check if bin dir exists
   stat:
-    path: "{{ nomad_bin_dir }}"
+    path: "{{ nomad_bin_path }}"
   register: nomad_bin_path_stat
 
 - name: Create bin dir if not exists
   file:
-    path: "{{ nomad_bin_dir }}"
+    path: "{{ nomad_bin_path }}"
     state: directory
     owner: "{{ nomad_bin_user }}"
     group: "{{ nomad_bin_group }}"
@@ -48,7 +48,7 @@
   ansible.builtin.unarchive:
     remote_src: true
     src: "{{ tempfolder.path }}/{{ nomad_pkg_name }}"
-    dest: "{{ nomad_bin_dir }}"
+    dest: "{{ nomad_bin_path }}"
     owner: "{{ nomad_bin_user }}"
     group: "{{ nomad_bin_group }}"
     mode: 0755
