@@ -4,20 +4,20 @@ ui = true
 
 listener "tcp" {
   address            = "0.0.0.0:8200"
+  tls_client_ca_file = "{{ vault_ca_file }}"
   tls_cert_file      = "{{ vault_cert_file }}"
   tls_key_file       = "{{ vault_key_file }}"
-  tls_client_ca_file = "{{ vault_ca_file }}"
 }
 
 storage "consul" {
   address = "localhost:8501"
   scheme = {{ "https" if vault_consul_ssl else "http" }}
   path = "vault/"
-  {% if vault_consul_ssl %}
+{% if vault_consul_ssl %}
   tls_ca_file = "{{ vault_consul_ca_file }}"
   tls_cert_file = "{{ vault_consul_cert_file }}"
   tls_key_file = "{{ vault_consul_key_file }}"
-  {% endif %}
+{% endif %}
 }
 
 seal "awskms" {
