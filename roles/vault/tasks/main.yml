@@ -1,0 +1,39 @@
+---
+
+- name: Check if vault exists
+  stat:
+    path: "{{ vault_bin_path }}/vault"
+  register: vault_bin_file
+
+- name: Check current version
+  command: "{{ vault_bin_dir }}/vault version"
+  changed_when: false
+  register: vault_existing_version
+  when: vault_bin_file.stat.exists
+
+- name: Install vault binary
+  include_tasks: install_vault.yml
+  notify: restart vault
+  when: not vault_bin_file.stat.exists or vault_version not in vault_existing_version.stdout
+
+- name: Ensure users and groups exists
+  include_tasks: user_group.yml
+
+- name: Install required config
+  include_tasks: install_config.yml
+
+- name: Enable vault service
+  become: true
+  ansible.builtin.systemd:
+    name: vault
+    enabled: true
+    daemon_reload: true
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Ensure vault service is started
+  become: true
+  ansible.builtin.service:
+    name: vault
+    state: started

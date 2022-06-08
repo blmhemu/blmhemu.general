@@ -1,0 +1,57 @@
+---
+
+# Configurable params
+vault_version: 1.12.2
+vault_datacenter: dc1
+vault_encrypt_key: ""
+vault_role: ""
+vault_ca_src_file: ""
+vault_cert_src_file: ""
+vault_key_src_file: ""
+vault_ca_file: "{{ vault_config_dir }}/vault-agent-ca.pem"
+vault_cert_file: "{{ vault_config_dir }}/{{ vault_datacenter }}-{{ vault_role }}-vault-0.pem"
+vault_key_file: "{{ vault_config_dir }}/{{ vault_datacenter }}-{{ vault_role }}-vault-0-key.pem"
+vault_enable_ui: true
+vault_bind_addr: "{{ '{{' }} GetInterfaceIP \\\"{{ ansible_default_ipv4.interface }}\\\" {{ '}}' }}"
+vault_client_addr: "0.0.0.0"
+vault_retry_join_interface: "ansible_default_ipv4"
+# Disable http and enable https. You also change other ports similarly
+vault_ports:
+  http: -1
+  https: 8501
+
+## Consul auto-bootstrap and service discovery. Locations of tls files on source (controller)
+vault_consul_enable: true
+vault_consul_address: "127.0.0.1:8501"
+vault_consul_ssl: true
+## These will be copied to remote at vault_consul_*_src_file and placed at vault_consul_*_file
+vault_consul_ca_src_file: ""
+vault_consul_cert_src_file: ""
+vault_consul_key_src_file: ""
+vault_consul_ca_file: "{{ vault_config_dir }}/consul-agent-ca.pem"
+vault_consul_cert_file: "{{ vault_config_dir }}/{{ vault_datacenter }}-cli-consul-0.pem"
+vault_consul_key_file: "{{ vault_config_dir }}/{{ vault_datacenter }}-cli-consul-0-key.pem"
+
+# Advanced params
+vault_arch_map:
+  amd64: amd64
+  x86_64: amd64
+  armv7l: arm
+  aarch64: arm64
+  32-bit: "386"
+  64-bit: amd64
+
+vault_user: vault
+vault_group: vault
+vault_config_dir: /etc/vault.d
+vault_data_dir: /opt/vault
+vault_systemd_dir: /etc/systemd/system
+vault_systemd_restart_sec: 30
+
+vault_advertise_addr: "{{ vault_bind_addr }}"
+
+vault_pkg_name: vault_{{ vault_version }}_linux_{{ vault_arch_map[ansible_architecture] }}.zip
+vault_checksum_name: vault_{{ vault_version }}_SHA256SUMS
+vault_base_url: https://releases.hashicorp.com/vault/{{ vault_version }}
+vault_pkg_url: "{{ vault_base_url }}/{{ vault_pkg_name }}"
+vault_checksum_url: "{{ vault_base_url }}/{{ vault_checksum_name }}"

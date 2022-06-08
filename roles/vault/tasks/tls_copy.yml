@@ -1,0 +1,30 @@
+---
+
+- block:
+    - name: Copy TLS vault CA
+      ansible.builtin.copy:
+        src: "{{ vault_ca_src_file }}"
+        dest: "{{ vault_ca_file }}"
+        owner: "{{ vault_user }}"
+        group: "{{ vault_group }}"
+        mode: 0640
+      when: vault_ca_src_file is defined and vault_ca_src_file | length > 0
+
+    - name: Copy TLS vault cert
+      ansible.builtin.copy:
+        src: "{{ vault_cert_src_file }}"
+        dest: "{{ vault_cert_file }}"
+        owner: "{{ vault_user }}"
+        group: "{{ vault_group }}"
+        mode: 0640
+      when: vault_cert_src_file is defined and vault_cert_src_file | length > 0
+
+    - name: Copy TLS vault key
+      ansible.builtin.copy:
+        src: "{{ vault_key_src_file }}"
+        dest: "{{ vault_key_file }}"
+        owner: "{{ vault_user }}"
+        group: "{{ vault_group }}"
+        mode: 0640
+      when: vault_key_src_file is defined and vault_key_src_file | length > 0
+  become: true

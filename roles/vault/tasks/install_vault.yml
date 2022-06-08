@@ -1,0 +1,60 @@
+---
+
+- name: Remove existing version
+  become: true
+  file:
+    path: "{{ vault_bin_path }}/vault"
+    state: absent
+
+- name: Create temporary build directory
+  ansible.builtin.tempfile:
+    state: directory
+    suffix: .vault
+  register: tempfolder
+  changed_when: false
+
+- name: Download vault checksum
+  get_url:
+    url: "{{ vault_checksum_url }}"
+    dest: "{{ tempfolder.path }}/{{ vault_checksum_name }}"
+
+- name: Extract checksum
+  shell: grep "{{ vault_pkg_name }}" "{{ tempfolder.path }}/{{ vault_checksum_name }}" | awk '{print $1}'
+  changed_when: false
+  register: checksum
+
+- name: Download vault package
+  get_url:
+    url: "{{ vault_pkg_url }}"
+    dest: "{{ tempfolder.path }}/{{ vault_pkg_name }}"
+    checksum: "sha256:{{ checksum.stdout }}"
+
+- name: Check if bin dir exists
+  stat:
+    path: "{{ vault_bin_path }}"
+  register: vault_bin_path_stat
+
+- name: Create bin dir if not exists
+  file:
+    path: "{{ vault_bin_path }}"
+    state: directory
+    owner: "{{ vault_bin_user }}"
+    group: "{{ vault_bin_group }}"
+    mode: 0755
+  when: not vault_bin_path_stat.stat.exists
+
+- name: Extract to bin dir
+  become: true
+  ansible.builtin.unarchive:
+    remote_src: true
+    src: "{{ tempfolder.path }}/{{ vault_pkg_name }}"
+    dest: "{{ vault_bin_path }}"
+    owner: "{{ vault_bin_user }}"
+    group: "{{ vault_bin_group }}"
+    mode: 0755
+  notify: restart vault
+
+- name: Remove temporary build directory
+  file:
+    path: "{{ tempfolder.path }}"
+    state: absent

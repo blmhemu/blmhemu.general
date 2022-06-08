@@ -1,0 +1,5 @@
+---
+
+vault_bin_path: /usr/bin
+vault_bin_user: "{{ vault_user }}"
+vault_bin_group: "{{ vault_group }}"

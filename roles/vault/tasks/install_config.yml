@@ -1,0 +1,34 @@
+---
+
+- block:
+    - name: Ensure config and data dirs exist
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ vault_user }}"
+        group: "{{ vault_group }}"
+        mode: 0755
+      with_items:
+        - "{{ vault_config_dir }}"
+        - "{{ vault_data_dir }}"
+
+    - name: Ensure config vault.hcl
+      template:
+        src: vault.hcl.j2
+        dest: "{{ vault_config_dir }}/vault.hcl"
+        owner: "{{ vault_user }}"
+        group: "{{ vault_group }}"
+        mode: 0640
+
+    - name: Copy TLS files
+      include_tasks: tls_copy.yml
+
+    - name: Ensure vault service file present
+      template:
+        src: vault.service.j2
+        dest: "{{ vault_systemd_dir }}/vault.service"
+        owner: root
+        group: root
+        mode: 0644
+  become: true
+  notify: restart vault
