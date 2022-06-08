@@ -3,14 +3,12 @@
 # Configurable params
 vault_version: 1.10.3
 vault_datacenter: dc1
-vault_encrypt_key: ""
-vault_role: ""
 vault_ca_src_file: ""
 vault_cert_src_file: ""
 vault_key_src_file: ""
 vault_ca_file: "{{ vault_config_dir }}/vault-agent-ca.pem"
-vault_cert_file: "{{ vault_config_dir }}/{{ vault_datacenter }}-{{ vault_role }}-vault-0.pem"
-vault_key_file: "{{ vault_config_dir }}/{{ vault_datacenter }}-{{ vault_role }}-vault-0-key.pem"
+vault_cert_file: "{{ vault_config_dir }}/{{ vault_datacenter }}-server-vault-0.pem"
+vault_key_file: "{{ vault_config_dir }}/{{ vault_datacenter }}-server-vault-0-key.pem"
 vault_enable_ui: true
 vault_bind_addr: "{{ '{{' }} GetInterfaceIP \\\"{{ ansible_default_ipv4.interface }}\\\" {{ '}}' }}"
 vault_client_addr: "0.0.0.0"
