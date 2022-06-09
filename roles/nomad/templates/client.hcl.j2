@@ -20,8 +20,6 @@ client {
 
 plugin "docker" {
   config {
-    volumes {
-      enabled = true
-    }
+    allow_privileged = {{ nomad_docker_allow_privileged }}
   }
 }
