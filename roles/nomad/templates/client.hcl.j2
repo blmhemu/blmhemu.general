@@ -20,6 +20,6 @@ client {
 
 plugin "docker" {
   config {
-    allow_privileged = {{ nomad_docker_allow_privileged }}
+    allow_privileged = {{ nomad_docker_allow_privileged | lower }}
   }
 }
