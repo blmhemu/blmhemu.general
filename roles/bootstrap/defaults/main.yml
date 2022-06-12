@@ -5,11 +5,6 @@
 # Configurable params
 bootstrap_locale: en_US.UTF-8
 bootstrap_hostname: "{{ inventory_hostname }}"
-bootstrap_user: "ubuntu"
-bootstrap_uid: 1000
-bootstrap_group: "ubuntu"
-bootstrap_gid: 1000
-bootstrap_login_shell: "/bin/zsh"
 
 # Advanced params
 bootstrap_apt_retries: 5
