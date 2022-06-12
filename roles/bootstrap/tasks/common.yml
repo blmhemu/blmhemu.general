@@ -24,3 +24,4 @@
     uid: "{{ bootstrap_uid }}"
     group: "{{ bootstrap_group }}"
     shell: "{{ bootstrap_login_shell }}"
+    create_home: true
