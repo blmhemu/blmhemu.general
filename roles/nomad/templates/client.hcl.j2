@@ -21,6 +21,6 @@ client {
 plugin "docker" {
   config {
     allow_privileged = {{ nomad_docker_allow_privileged | lower }}
-    pull_activity_timeout = {{ nomad_docker_pull_activity_timeout }}
+    pull_activity_timeout = "{{ nomad_docker_pull_activity_timeout }}"
   }
 }
