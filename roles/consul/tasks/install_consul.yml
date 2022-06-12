@@ -1,5 +1,11 @@
 ---
 
+- name: Install unzip
+  become: true
+  ansible.builtin.package:
+    name: unzip
+    state: present
+
 - name: Remove existing version
   become: true
   file:
