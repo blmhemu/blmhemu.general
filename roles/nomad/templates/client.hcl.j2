@@ -3,7 +3,7 @@ client {
 {% for vol in nomad_host_volumes %}
   host_volume "{{ vol.name }}" {
     path = "{{ vol.path }}"
-    read_only = {{ vol.read_only | lower }}
+    read_only = {{ vol.read_only | default(false) | lower }}
   }
 {% endfor %}
 {% for net in nomad_host_networks %}
